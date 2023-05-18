@@ -1,0 +1,1 @@
+# Minimalistic svelte game template
