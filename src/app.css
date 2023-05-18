@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Open Sans';
-  src: url('../resources/fonts/opensans.ttf') format('truetype');
+  src: url('/resources/fonts/opensans.ttf') format('truetype');
   font-style: normal;
   font-weight: 400;
 }
@@ -16,4 +16,3 @@ html, body {
   overflow: hidden;
   user-select: none;
 }
-
