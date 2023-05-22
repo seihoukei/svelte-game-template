@@ -20,6 +20,7 @@ Minimalistic template to base prototypes and small projects on without worrying 
   - ACTIONSAVE_EVENTS / AUTOBACKUP_EVENTS
   - getMilestones
   - metaFunction
+  - versionFunction
 - GameUI.svelte
   - Remove debug data when irrelevant
 - UIMenu.svelte
@@ -99,5 +100,7 @@ Used to shape value into a string:
 ### Save states
 
 Saves are stored in localStorage fields with given game prefix. 
+Metadata can be added within `metaFunction` to add easily extractable info to display at save menu. 
 Save data is JSONified, then compressed using a worker (to avoid blocking the main thread if save data is big), then metadata is prepended. First part of save string before `.` is base64-encoded metadata json.
-Metadata includes save version, and if save format changes over time it's possible to add save updates, but so far it's to be hardcoded in SaveStateManager.
+Metadata includes save version, and if save format changes over time it's possible to update save within `versionFunction`.
+`offlineFunction` can be modified to process offline time in a different manner.

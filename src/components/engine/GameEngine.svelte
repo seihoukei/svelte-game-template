@@ -12,6 +12,7 @@
     const MAX_STEP_TIME = MAX_TICK_TIME
 
     const GAME_SAVE_PREFIX = "Svelte_Game"
+    const SAVE_VERSION = 1
     // important events to autosave game shortly after
     const ACTIONSAVE_EVENTS = ["bar-maxed"]
     // important events to create a backup before
@@ -56,6 +57,11 @@
         }
     }
 
+    function versionFunction(data, version) {
+        //update save from different version
+        return data
+    }
+
     function offlineFunction(state, time) {
         //modify freshly loaded state according to offline time
         //executed before state is actually assigned to game.state
@@ -70,11 +76,13 @@
                   defaultState={DEFAULT_GAME_STATE}
                   {metaFunction}
                   {offlineFunction}
+                  {versionFunction}
                   actionsaveEvents={ACTIONSAVE_EVENTS}
                   backupEvents={AUTOBACKUP_EVENTS}
                   autosaveInterval={AUTOSAVE_INTERVAL}
                   actionsaveInterval={ACTIONSAVE_INTERVAL}
                   prefix={GAME_SAVE_PREFIX}
+                  version={SAVE_VERSION}
 />
 
 {#key gameId}

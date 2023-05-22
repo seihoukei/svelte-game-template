@@ -16,6 +16,8 @@
     export let actionsaveInterval = 5000
     export let metaFunction = null
     export let offlineFunction = null
+    export let versionFunction = null
+    export let version = 1
 
     export let actionsaveEvents = []
     export let backupEvents = []
@@ -107,7 +109,8 @@
             return
         const save = SaveProcessor.decode(saveData)
         if (save?._meta) {
-            const loadedState = save.state
+            let loadedState = save.state
+            loadedState = versionFunction?.(loadedState, save._meta.version) ?? loadedState
             if (offlineTime)
                 offlineFunction?.(loadedState, (Date.now() - save._meta.date) / 1000)
             Object.assign(state, loadedState)
@@ -117,16 +120,19 @@
     }
 
     async function prepareSave() {
+        //this is available after unpacking the save and used by loadData
         const saveData = await SaveProcessor.encodeAsync({
             _meta: {
+                version,
                 date : Date.now(),
             },
             state
         })
 
+        //this is available without unpacking the save and used by saveInfo
         const userMeta = metaFunction?.() ?? {}
         const meta = btoa(JSON.stringify({
-            _version : 1,
+            _version : version,
             _date : Date.now(),
             ...userMeta
         }))
