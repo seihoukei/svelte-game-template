@@ -11,7 +11,7 @@
 
     $: updateInterval(rate)
 
-    function updateInterval(rate, boost) {
+    function updateInterval(rate) {
         if (interval)
             clearInterval(interval)
 

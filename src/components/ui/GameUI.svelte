@@ -1,9 +1,17 @@
 <script>
     import UIMeta from "./UIMeta.svelte"
-    import UIBar from "components/ui/UIBar.svelte"
+    import UIBar from "components/ui/elements/UIBar.svelte"
+    import UIDialogs from "components/ui/UIDialogs.svelte"
+    import UIMenu from "components/ui/dialogs/UIMenu.svelte"
     import UIHover from "components/ui/UIHover.svelte"
+    import DisplayString from "utility/display-string.js"
+
+    const UI_DIALOGS = {
+        menu : UIMenu,
+    }
 
     export let game
+
 </script>
 
 {#if import.meta.env.MODE === "development"}
@@ -15,7 +23,12 @@
     <UIMeta {game}/>
     <div class="content">
         <UIBar bar={game.state.bar} />
+        <div class="icon-text">
+            {@html DisplayString.html(`You have ~logo~${game.state.bar?.count} from maxed out bars`)}
+        </div>
     </div>
+
+    <UIDialogs {game} dialogs={UI_DIALOGS}/>
 
     <UIHover {game} />
 {/if}
@@ -33,6 +46,15 @@
     div.content {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
         margin: 50px 0;
+    }
+
+    div.icon-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+
     }
 </style>

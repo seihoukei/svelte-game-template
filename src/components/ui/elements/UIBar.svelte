@@ -1,6 +1,7 @@
 <script>
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
     import Trigger from "utility/trigger-svelte.js"
+    import DisplayString from "utility/display-string.js"
 
     export let bar
 </script>
@@ -10,7 +11,7 @@
         <UIProgressBar
                 max={bar.max}
                 current={bar.current}
-                caption={`${bar.current?.toFixed(2)} / ${bar.max?.toFixed(2)}`}
+                caption={`${DisplayString.number(bar.current)} / ${DisplayString.shortNumber(bar.max)}`}
         />
     </div>
 {/if}

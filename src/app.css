@@ -5,6 +5,15 @@
   font-weight: 400;
 }
 
+:root {
+  --ui-dialog-color: #777777;
+  --ui-dialog-section-color: #444444;
+
+  --ui-button-color: #222277;
+  --ui-button-hover-color: #444499;
+  --ui-button-disabled-color: #222222;
+}
+
 html, body {
   background: #222222;
   color: #CCCCCC;
@@ -15,4 +24,22 @@ html, body {
   height : 100vh;
   overflow: hidden;
   user-select: none;
+}
+
+span.inline-icon {
+  display : inline-block;
+  width : 1.5em;
+  height: 1.5em;
+  margin : -0.2em 0.2em;
+  font-size: 0.75em;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: center;
+
+  background: var(--icon-background);
+  background-size: contain;
+}
+
+span.inline-icon.logo {
+  --icon-background: url("../resources/favicon.png");
 }

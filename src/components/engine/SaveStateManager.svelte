@@ -101,10 +101,10 @@
     }
 
     function loadData(data, offlineTime = true) {
+        resetGame()
         const saveData = data?.split(".")?.at(-1) ?? null
         if (!saveData)
             return
-        resetGame()
         const save = SaveProcessor.decode(saveData)
         if (save?._meta) {
             const loadedState = save.state

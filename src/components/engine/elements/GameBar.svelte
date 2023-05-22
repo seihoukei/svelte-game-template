@@ -4,9 +4,10 @@
     export let bar = {
         current : 0,
         max : 10,
+        count : 0,
     }
 
-    Trigger.on("command-tick", advance)
+    Trigger.on("command-advance", advance)
 
     function advance(time) {
         if (!bar)
@@ -16,6 +17,7 @@
         while (bar.current >= bar.max) {
             bar.current -= bar.max
             bar.max *= 2
+            bar.count += 1
             Trigger("bar-maxed")
         }
     }
