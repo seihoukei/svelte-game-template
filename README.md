@@ -1,19 +1,27 @@
 # Minimalistic svelte game template
 
+Minimalistic template to base prototypes and small projects on without worrying too much about boilerplate.
+
 ## Things to remember to adjust when using as a template:
 
+- vite.config.js
+  - **base** especially if updating packages
+- package.json
+  - **"name"**
 - Index.html
-  - Title
-  - Description
-  - Favicon
+  - **Title**
+  - **Description**
+  - **Favicon**
 - App.svelte
   - GameTimer rate
   - Disable Wakelock if not needed
 - GameEngine.svelte
-  - GAME_SAVE_PREFIX
+  - **GAME_SAVE_PREFIX**
   - ACTIONSAVE_EVENTS / AUTOBACKUP_EVENTS
   - getMilestones
   - metaFunction
+- GameUI.svelte
+  - Remove debug data when irrelevant
 - UIMenu.svelte
   - Display meta data for save instead of ???
 - UIHover.svelte
