@@ -1,17 +1,18 @@
 <script>
-    import Trigger from "utility/trigger-svelte.js"
-    import DisplayString from "utility/display-string.js"
+    import DisplayString from "../../utility/display-string.js"
+    import game from "stores/store-game.js"
+    import Dialogs from "utility/dialog/dialogs.js"
+    import State from "utility/state/state.js"
 
-    export let game
-
-    $: currentTime = game?.state?.time ?? 0
-    $: targetTime = game?.state?.targetTime ?? 0
+    $: state = $game?.state
+    $: currentTime = state?.time ?? 0
+    $: targetTime = state?.targetTime ?? 0
     $: catchingUp = targetTime - currentTime > 10
 </script>
 
 <div class="container">
-    <button on:click={() => Trigger("command-open-dialog", "menu")}>Menu</button>
-    <button on:click={() => confirm("Reset game?") && Trigger("command-reset-game")}>Reset game</button>
+    <button on:click={() => Dialogs.open("menu")}>Menu</button>
+    <button on:click={() => confirm("Reset game?") && State.reset()}>Reset game</button>
     <span class="time">
         {DisplayString.time(currentTime)}
         {#if catchingUp}

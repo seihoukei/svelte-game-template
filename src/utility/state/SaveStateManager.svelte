@@ -1,65 +1,66 @@
 <script>
-    import {onDestroy, onMount} from "svelte"
     import SaveProcessor from "utility/save-processor.js"
+    import State from "utility/state/state.js"
+
+    import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger-svelte.js"
 
-    const AUTOSAVE_SLOT = `_Autosave`
-    const BACKUP_SLOT = `_BACKUP`
     const PRIORITY_FIRST = -Infinity
     const PRIORITY_LAST = Infinity
 
     export let state = Object.create(null)
     export let id = Math.random()
-	export let prefix = "Svelte_Game"
-    export let defaultState = {}
-    export let autosaveInterval = 60000
-    export let actionsaveInterval = 5000
     export let metaFunction = null
     export let offlineFunction = null
     export let versionFunction = null
-    export let version = 1
 
-    export let actionsaveEvents = []
-    export let backupEvents = []
-
-    let saveInfo = {}
+    $: saveInfo = State.saveInfo
 
     let lastSaved = performance.now()
     let saveTimeout = null
 
-    Trigger.on("command-save-game", saveGame)
-    Trigger.on("command-load-game", loadGame)
-    Trigger.on("command-import-save", loadData)
-    Trigger.on("command-export-save", exportSave)
-    Trigger.on("command-reset-game", resetGame)
-    Trigger.on("command-update-save-info", updateInfo)
+    //commands from State
+    Trigger.on("internal-command-save-game", saveGame)
+    Trigger.on("internal-command-load-game", loadGame)
+    Trigger.on("internal-command-import-save", loadData)
+    Trigger.on("internal-command-export-save", exportSave)
+    Trigger.on("internal-command-reset-game", resetGame)
 
-    for (const event of actionsaveEvents) {
+    for (const event of State.config.actionsaveEvents) {
         Trigger.on(event, planSave)
             .setPriority(PRIORITY_LAST)
     }
-    for (const event of backupEvents) {
+
+    for (const event of State.config.backupEvents) {
         Trigger.on(event, backupSave, event)
             .setPriority(PRIORITY_FIRST)
     }
 
-    $: updateInterval(autosaveInterval)
+    $: autosaveInterval = State.autosaveInterval
+    $: updateInterval($autosaveInterval)
 
-    function getSlotName(slot = AUTOSAVE_SLOT) {
-        if (slot === "")
-            slot = AUTOSAVE_SLOT
-        return `${prefix}_Save_${slot}`
+    let interval = null
+    function updateInterval(time) {
+
+        if (interval)
+            clearInterval(interval)
+        interval = setInterval(saveGame, time)
     }
 
-    async function saveGame(slot = AUTOSAVE_SLOT) {
+    onDestroy(() => {
+        clearInterval(interval)
+    })
+
+
+    async function saveGame(slot = State.config.autosaveSlot) {
         clearTimeout(saveTimeout)
         saveTimeout = null
         lastSaved = performance.now()   //in case save compression gets stuck somehow
 
         const saveData = await prepareSave()
         lastSaved = performance.now()
-        localStorage[getSlotName(slot)] = saveData
-        updateInfo([slot])
+        localStorage[State.getSlotName(slot)] = saveData
+        State.updateSaveInfo([slot])
 
         Trigger("game-saved", slot)
     }
@@ -68,39 +69,31 @@
         if (saveTimeout)
             return
         const sinceLastSave = performance.now() - lastSaved
-        if (sinceLastSave > actionsaveInterval) {
+        if (sinceLastSave > State.config.actionsaveInterval) {
             saveGame()
             return
         }
-        saveTimeout = setTimeout(saveGame, actionsaveInterval - sinceLastSave)
+        saveTimeout = setTimeout(saveGame, State.config.actionsaveInterval - sinceLastSave)
     }
 
     function backupSave(reason = null) {
         saveGame(reason === null
-            ? BACKUP_SLOT
-            : `${BACKUP_SLOT}_${reason}`
+            ? State.config.backupSlot
+            : `${State.config.backupSlot}_${reason}`
         )
     }
 
     function loadGame(slot, offlineTime = true) {
-        const saveData = localStorage[getSlotName(slot)]
+        const saveData = localStorage[State.getSlotName(slot)]
         loadData(saveData, offlineTime)
-        Trigger("game-loaded", slot)
     }
 
     function resetGame() {
         state = Object.create(null)
         id = Math.random()
-        Object.assign(state, defaultState)
-        Trigger("game-reset")
+        Object.assign(state, State.config.defaultState)
     }
 
-    let interval = null
-    function updateInterval(time) {
-        if (interval)
-            clearInterval(interval)
-        interval = setInterval(saveGame, time)
-    }
 
     function loadData(data, offlineTime = true) {
         resetGame()
@@ -123,7 +116,7 @@
         //this is available after unpacking the save and used by loadData
         const saveData = await SaveProcessor.encodeAsync({
             _meta: {
-                version,
+                version : State.config.saveVersion,
                 date : Date.now(),
             },
             state
@@ -132,20 +125,12 @@
         //this is available without unpacking the save and used by saveInfo
         const userMeta = metaFunction?.() ?? {}
         const meta = btoa(JSON.stringify({
-            _version : version,
+            _version : State.config.saveVersion,
             _date : Date.now(),
             ...userMeta
         }))
 
         return `${meta}.${saveData}`
-    }
-
-    function getMetaData(slot = AUTOSAVE_SLOT) {
-        const data = localStorage[getSlotName(slot)]
-        const meta = data?.split(".")?.[0] ?? null
-        if (!meta || meta === data)
-            return {}
-        return JSON.parse(atob(meta))
     }
 
     async function exportSave() {
@@ -154,19 +139,9 @@
             .catch(() => alert("Export failed"))
     }
 
-    function updateInfo(slots) {
-        for (const slot of slots) {
-            saveInfo[slot] = getMetaData(slot)
-        }
-        Trigger("save-info-updated", saveInfo)
-    }
-
     onMount(() => {
         loadGame()
     })
 
-    onDestroy(() => {
-        clearInterval(interval)
-    })
 
 </script>

@@ -1,4 +1,25 @@
 export default class DisplayString {
+    static Processor = class DisplayStringProcessor {
+        #replacers = []
+        
+        constructor(replacers = []) {
+            this.#replacers = replacers
+        }
+        
+        addReplacer(replacer) {
+            this.#replacers.push(replacer)
+        }
+        
+        apply(string, type = 'html') {
+            let output = string
+            for (const {search, [type]:replacement = null} of this.#replacers) {
+                if (replacement !== null)
+                output = output.replace(search, replacement)
+            }
+            return output
+        }
+    }
+    
     static time(value) {
         if (value < 60) {
             return value.toFixed(1) + "s"
@@ -45,13 +66,18 @@ export default class DisplayString {
         return `${displayValue}%`
     }
     
-    static #insertIcon(match, id) {
-        return `<span class="${id} inline-icon"></span>`
+    static #defaultProcessor = new DisplayString.Processor()
+    
+    static addReplacer(replacer) {
+        this.#defaultProcessor.addReplacer(replacer)
     }
     
-    static html(string) {
-        return string
-            .replace(/~(.*?)~/g, this.#insertIcon)
+    static html(string, processor = this.#defaultProcessor) {
+        return processor.apply(string, "html")
+    }
+    
+    static text(string, processor = this.#defaultProcessor) {
+        return processor.apply(string, "text")
     }
     
 }

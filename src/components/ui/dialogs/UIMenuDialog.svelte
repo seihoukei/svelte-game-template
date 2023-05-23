@@ -1,61 +1,59 @@
 <script>
-    import UIDialog from "components/ui/dialogs/UIDialog.svelte"
-    import Trigger from "utility/trigger-svelte.js"
     import {onMount} from "svelte"
-    import interactive from "utility/interactive.js"
+    import interactive from "utility/use-interactive.js"
     import DisplayString from "utility/display-string.js"
+    import game from "stores/store-game.js"
+    import State from "utility/state/state.js"
+    import Dialogs from "utility/dialog/dialogs.js"
+    import UIDialog from "utility/dialog/UIDialog.svelte"
 
     const SLOTS = ["","SAVE1","SAVE2","SAVE3"]
 
-    Trigger.on("save-info-updated", updateSaveInfo)
-
-    export let game
     export let data
 
-    let saveText = ""
-    let slotInfo = {}
+    const saveInfo = State.saveInfo
 
-    $: currentTime = game?.state?.time ?? 0
-    $: targetTime = game?.state?.targetTime ?? 0
+    let saveText = ""
+
+    $: state = $game?.state
+    $: currentTime = state?.time ?? 0
+    $: targetTime = state?.targetTime ?? 0
     $: catchingUp = targetTime - currentTime > 10
 
     function exportSave() {
-        Trigger("command-export-save")
+        State.export()
     }
 
     function importSave(processOffline) {
         if (saveText === "")
             return
 
-        Trigger("command-import-save", saveText, processOffline)
-        Trigger("command-close-dialogs")
+        State.import(saveText, processOffline)
+        Dialogs.closeAll()
     }
 
     function resetState() {
         if (!confirm("Reset game?"))
             return
-        Trigger("command-reset-game")
+        State.reset()
+        Dialogs.closeAll()
     }
 
     function save(slot) {
-        Trigger("command-save-game", slot)
+        State.save(slot)
     }
 
-    function load(slot, offlineTime = true) {
-        Trigger("command-load-game", slot, offlineTime)
-        Trigger("command-close-dialogs")
-    }
-
-    function updateSaveInfo(info) {
-        slotInfo = info
+    function load(slot, processOffline = true) {
+        State.load(slot, processOffline)
+        Dialogs.closeAll()
     }
 
     function close() {
-        Trigger("command-close-dialog")
+        Dialogs.close("menu")
     }
 
     onMount(() => {
-        Trigger("command-update-save-info", SLOTS)
+        State.updateSaveInfo(SLOTS)
     })
 
 </script>
@@ -80,6 +78,7 @@
         </div>
         <div class="saves">
             {#each SLOTS as slot}
+                {@const info = $saveInfo[slot]}
                 <div class="save">
                     {#if slot !== ""}
                         <div class="button"
@@ -92,10 +91,10 @@
                         </div>
                     {/if}
                     <div class="saveinfo">
-                        {#if slotInfo[slot]?._date}
-                            {new Date(slotInfo[slot]?._date).toLocaleDateString()} {new Date(slotInfo[slot]?._date).toLocaleTimeString()}
+                        {#if info?._date}
+                            {new Date(info?._date).toLocaleDateString()} {new Date(info?._date).toLocaleTimeString()}
                             |
-                            {DisplayString.time(slotInfo[slot]?.time)}
+                            {DisplayString.time(info?.time)}
                             |
                             {"???"}%
                         {:else}

@@ -1,15 +1,16 @@
 <script>
-    import Trigger from "utility/trigger-svelte.js"
+    import Dialogs from "utility/dialog/dialogs.js"
 
     export let modal = false
 
     let holder
 
     function close(event) {
-        if (event.target === holder) {
-            Trigger("command-close-dialog")
+        if (event.target === holder && !modal) {
+            Dialogs.close()
         }
     }
+
 </script>
 
 <div class="holder" on:click={close} bind:this={holder}>

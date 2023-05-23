@@ -1,13 +1,17 @@
 <script>
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
-    import Trigger from "utility/trigger-svelte.js"
+
     import DisplayString from "utility/display-string.js"
+
+    import tooltip from "utility/tooltip/use-tooltip.js"
 
     export let bar
 </script>
 
 {#if bar}
-     <div class="bar">
+     <div class="bar"
+          use:tooltip={{bar}}
+     >
         <UIProgressBar
                 max={bar.max}
                 current={bar.current}

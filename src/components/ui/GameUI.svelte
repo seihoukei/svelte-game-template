@@ -1,16 +1,12 @@
 <script>
     import UIMeta from "./UIMeta.svelte"
     import UIBar from "components/ui/elements/UIBar.svelte"
-    import UIDialogs from "components/ui/UIDialogs.svelte"
-    import UIMenu from "components/ui/dialogs/UIMenu.svelte"
-    import UIHover from "components/ui/UIHover.svelte"
     import DisplayString from "utility/display-string.js"
+    import game from "stores/store-game.js"
+    import UIDialogs from "utility/dialog/UIDialogs.svelte"
+    import UIToolTip from "utility/tooltip/UIToolTip.svelte"
 
-    const UI_DIALOGS = {
-        menu : UIMenu,
-    }
-
-    export let game
+    $: state = $game?.state ?? null
 
 </script>
 
@@ -18,19 +14,18 @@
     <pre class="debug">{JSON.stringify(game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
 {/if}
 
-{#if game?.state}
+{#if state}
 
-    <UIMeta {game}/>
+    <UIMeta />
     <div class="content">
-        <UIBar bar={game.state.bar} />
+        <UIBar bar={state.bar} />
         <div class="icon-text">
-            {@html DisplayString.html(`You have ~logo~${game.state.bar?.count} from maxed out bars`)}
+            {@html DisplayString.html(`You have ~logo~${state.bar?.count} from maxed out bars`)}
         </div>
     </div>
 
-    <UIDialogs {game} dialogs={UI_DIALOGS}/>
-
-    <UIHover {game} />
+    <UIDialogs />
+    <UIToolTip />
 {/if}
 
 <style>

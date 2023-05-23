@@ -12,25 +12,23 @@ Minimalistic template to base prototypes and small projects on without worrying 
   - **Title**
   - **Description**
   - **Favicon**
-- App.svelte
-  - GameTimer rate
-  - Disable Wakelock if not needed
 - GameEngine.svelte
-  - **GAME_SAVE_PREFIX**
-  - ACTIONSAVE_EVENTS / AUTOBACKUP_EVENTS
   - getMilestones
   - metaFunction
   - versionFunction
+  - offlineFunction
 - GameUI.svelte
-  - Remove debug data when irrelevant
+  - Remove debug data and UIMeta when irrelevant
 - UIMenu.svelte
   - Display meta data for save instead of ???
-- UIHover.svelte
-  - Special hint types for `hoverable` if relevant
+  - Display game title
+- game-config.js
+  - adjust all settings, most importantly `state.savePrefix`
+- init.js
+  - register tooltips, dialogs and displaystring processors
 - app.css
-  - Define backgrounds for custom inline-icons if relevant 
-- Other changes
-  - Add menu button and remove UIMeta
+  - Define backgrounds for custom inline-icons if relevant
+  - --ui-x-color variables
 
 ## Important notes
 
@@ -49,35 +47,19 @@ By convention, "command-x" triggers expect some specific change to happen in a w
 Triggers to react to:
 - `command-advance` `(time)` - event from game engine, main trigger to react to with game-advancing events.
 - `game-saved` `(slot)` - reports that game was saved to specific slot
-- `game-loaded` `(slot)` - reports that game was loaded from specific slot
-- `game-reset` - reports that game was reset
-- `save-info-updated` `(info)` - reports that save metadata was updated, and argument provides that data 
 
-Triggers to emit:
-- `command-open-dialog` `(name)` - event to be used to open dialogs (like menu)
-- `command-close-dialog` - event to be used to close current topmost dialog
-- `command-close-dialogs` - event to be used to close all dialogs
-
-Triggers to be used when reimplementing menu:
-- `command-export-save` - exports current game state to clipboard
-- `command-import-save` - exports current game state to clipboard
-- `command-reset-game` - resets current game state
-- `command-save-game` `(slot)` - saves current game to given slot
-- `command-load-game` `(slot, offlineTime)` - loads game from given slot, with or without processing offline time
-- `command-update-save-info` `(SLOTS)` - requests update of save metaData for given slot names array
-
-Triggers that should not be used directly:
-- `command-tick` - event from game timer, used internally, use `command-advance` for more time-aware progression handling
-- `command-set-hover`, `command-reset-hover` - used by `UIHover` and `hoverable`, see corresponding section
+Triggers that start with `internal-command-` should not be interacted with.
 
 ### Game state
 
-GameEngine and descendants should be the source of truth for game state. No double-binding same element twice, instead modify entity form inside on Trigger events (Trigger.on("...")).
-GameUI interacts with game state through Trigger calls.
+GameEngine and descendants should be the source of truth for game state. No double-binding same element twice, instead modify entity form inside on Trigger events (`Trigger.on("...", ...)`).
+GameUI interacts with game state only through Trigger calls.
 
-### use:hoverable
+### use:tooltip
 
-Elements with `use:hoverable={data}` cause hint to show up whrn hovered. Data can be a string (would be displayed as is) or an object with custom handler implemented in `UIHover`
+Elements with `use:tooltip={data}` cause hint to show up when hovered. 
+
+Data can be a string (would be displayed as is) or an object `{name: data}` with custom display component registered through `Tooltips.register(name, component)`. Data would then be passed to registered component as `data`.
 
 ### use:interactive
 
@@ -87,6 +69,8 @@ Elements with `use:interactive` emit special triggers when interacted with:
 - `specialaction` - on long tap, right-click or shift-click
 - `enter`, `leave` - when pointer/ lat touch position enters/leaves element
 
+Currently, element with `interactive` blocks its children with `interactive`.
+
 ### DisplayString
 
 Used to shape value into a string:
@@ -95,7 +79,17 @@ Used to shape value into a string:
 - `DisplayString.shortNumber` - Scientific notation, minimum decimal digits
 - `DisplayString.percentage` - fraction displayed as percentage
 - `DisplayString.time` - formats time as SSs, MM:SS or HH:MM:SS
-- `DisplayString.html` - replaces ~TEXT~ with `inline-icon TEXT` span.
+- `DisplayString.html` and `DisplayString.text` - apply registered replacers to the string.
+
+#### DisplayString.Processor
+
+`DisplayString.Processor` is a constructor for string processor that applies chain of replacers to givven string.
+
+Replacer is an object that has `search` field with search string or regexp to replace and fields like `html`, `text` or others with replacement string or function to apply. Array of those can be passed to Processor constructor, or they can be passed one by one to instance's `.addReplacer`
+
+Instance's `.apply(string, type)` applies every replacer with replacement provided for given type.
+
+`DisplayString` has a default processor, which can have replacers added with `DisplayStriong.addReplacer`, those are applied through `.html` and `.text` methods. 
 
 ### Save states
 
@@ -104,3 +98,9 @@ Metadata can be added within `metaFunction` to add easily extractable info to di
 Save data is JSONified, then compressed using a worker (to avoid blocking the main thread if save data is big), then metadata is prepended. First part of save string before `.` is base64-encoded metadata json.
 Metadata includes save version, and if save format changes over time it's possible to update save within `versionFunction`.
 `offlineFunction` can be modified to process offline time in a different manner.
+
+State manipulation is performed through `State`.
+
+### Dialogs
+
+`Dialogs` manages stack of displayed dialogs. Dialogs can be registered with `Dialogs.register(name, component)` and component should use `<UIDialog>` or `<UIDialog modal>` as a wrapper to its DOM content.
