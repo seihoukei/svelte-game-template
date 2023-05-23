@@ -1,14 +1,14 @@
-import Trigger from "utility/trigger-svelte.js"
+import Tooltips from "utility/tooltip/tooltips.js"
 
-export default function hoverable(node, options = {}) {
+export default function tooltip(node, options = {}) {
     
     const mouseMoveHandler = (event) => {
-        Trigger("command-set-hover", options, event.clientX, event.clientY)
+        Tooltips.setTooltip(options, event.clientX, event.clientY)
         cancelEvent(event)
     }
     
     const mouseLeaveHandler = (event) => {
-        Trigger("command-reset-hover", options)
+        Tooltips.resetTooltip(options)
         cancelEvent(event)
     }
     
@@ -16,8 +16,6 @@ export default function hoverable(node, options = {}) {
         event.preventDefault()
         event.stopPropagation()
     }
-    
-    const dummy = () => {}
     
     const handlers = {
         mousemove : mouseMoveHandler,
