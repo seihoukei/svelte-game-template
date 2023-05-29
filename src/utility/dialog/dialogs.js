@@ -9,25 +9,41 @@ export default class Dialogs {
         ALL : 4,
     }
     
-    static BUTTON_SETS = {
-        OK : [{
+    static BUTTONS = {
+        OK : {
             text: "OK",
-            result: this.RESULTS.OK
-        }],
-        OK_CANCEL : [{
-            text: "OK",
-            result: this.RESULTS.OK
-        },{
+            result: this.RESULTS.OK,
+        },
+        CANCEL : {
             text : "Cancel",
             result : this.RESULTS.CANCEL
-        }],
-        YES_NO : [{
+        },
+        YES : {
             text: "Yes",
             result: this.RESULTS.YES
-        },{
+        },
+        NO : {
             text : "No",
             result : this.RESULTS.NO
-        }],
+        },
+        ALL : {
+            text : "All",
+            result : this.RESULTS.ALL
+        },
+    }
+    
+    static BUTTON_SETS = {
+        OK : [
+            this.BUTTONS.OK,
+        ],
+        OK_CANCEL : [
+            this.BUTTONS.OK,
+            this.BUTTONS.CANCEL,
+        ],
+        YES_NO : [
+            this.BUTTONS.YES,
+            this.BUTTONS.NO,
+        ],
     }
     
     static #dialogs = {}
@@ -68,6 +84,13 @@ export default class Dialogs {
     }
     
     static async confirm(prompt, buttons = this.BUTTON_SETS.YES_NO) {
+        return this.modal({
+            message : prompt,
+            buttons,
+        })
+    }
+    
+    static async ask(prompt, buttons = this.BUTTON_SETS.YES_NO) {
         return this.modal({
             message : prompt,
             buttons,

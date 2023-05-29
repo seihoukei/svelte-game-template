@@ -85,6 +85,8 @@ Used to shape value into a string:
 - `DisplayString.text` - applies given set of replacers to the string
 - `DisplayString.html` is a shorthand for `DisplayString.text` with `HTML` format
 
+`DisplayString.config` defines default settings for numbers, and `DisplayString.applyConfig(changes)` can be used to properly modify it.
+
 ### Save states
 
 Saves are stored in localStorage fields with given game prefix. 
@@ -98,7 +100,33 @@ State manipulation is performed through `State`.
 ### Dialogs
 
 `Dialogs` manages stack of displayed dialogs. Dialogs can be registered with `Dialogs.register(name, component)` and component should use `<UIDialog>` or `<UIDialog modal>` as a wrapper to its DOM content.
+- `Dialogs.open(name, data)` - opens given registered dialog with given data
+- `Dialogs.close([name])` - closes topmost dialog, if name is provided only dialog of that type would be closed
+
+#### Modal dialogs
+
+Special dialog `UIModalDialog` is used for async `Dialogs.ask`, `Dialogs.confirm`, `Dialogs.alert` and `Dialogs.prompt` dialogs. Custom buttons with custom text and results can be listed for non-input dialogs:
+
+```js
+    result = await Dialogs.ask("Who do you want to call?", [{
+        text: "Dave",
+        result: "dave",
+    },{
+        text: "Mary",
+        result: "mary",
+    },{
+        text: "Noone",
+        result: null,
+    }])
+```
+
+- `Dialogs.confirm`, `Dialogs.ask` and `Dialogs.alert` are shorthands to `Dialogs.modal` that return chosen button
+- `Dialogs.prompt` and `Dialogs.promptNumber` are shorthands to `Dialogs.modal` that return input or `null` if canceled
 
 ### svelteInterval
 
 `svelte-interval` is a wrapper for setInterval that cleans up after itself, using `onMount`/`onDestroy` internally. Returns an object that has `.delay` function that can delay next interval trigger by given time. 
+
+### Settings
+
+`Settings` module allows for centralized settings control and application through `SettingWatcher`. Custom categories and settings can be added through `GAME_CONFIG`.
