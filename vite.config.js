@@ -14,6 +14,7 @@ export default defineConfig({
       'stores': path.resolve('./src/stores'),
       'data': path.resolve('./src/data'),
       'workers': path.resolve('./src/workers'),
+      'css': path.resolve('./src/css'),
     }
   }
 })

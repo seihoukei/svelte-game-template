@@ -1,0 +1,17 @@
+span.inline-icon {
+    display : inline-block;
+    width : 1.5em;
+    height: 1.5em;
+    margin : -0.2em 0.2em;
+    font-size: 0.75em;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+
+    background: var(--icon-background);
+    background-size: contain;
+}
+
+span.inline-icon.logo {
+    --icon-background: url("../resources/favicon.png");
+}

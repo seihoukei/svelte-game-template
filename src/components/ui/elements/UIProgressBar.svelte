@@ -3,7 +3,7 @@
     export let current = 0
     export let caption = ""
     export let bgcolor = "#333333"
-    export let fgcolor = "#666666"
+    export let fgcolor = "#337733"
 
     $: progress = (100 * current / max).toFixed(2)
 </script>

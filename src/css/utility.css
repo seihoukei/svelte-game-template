@@ -1,0 +1,85 @@
+.flex {
+    display : flex;
+}
+
+.flex.vertical {
+    flex-direction: column;
+}
+
+.flex.horizontal {
+    flex-direction: row;
+}
+
+.flex.gapped, .grid.gapped {
+    row-gap: var(--ui-default-spacing);
+    column-gap: var(--ui-default-spacing);
+}
+
+.flex.centered {
+    align-items: center;
+    justify-content: center;
+}
+
+.flex.wrapped {
+    flex-wrap: wrap;
+}
+
+.flex.stretched {
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.flex.spaced {
+    justify-content: space-around;
+}
+
+.flex.spaced-between {
+    justify-content: space-between;
+}
+
+.grid {
+    display: grid;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position : absolute;
+}
+
+.absolute.fullsize {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.absolute.padded {
+    left: var(--ui-default-spacing);
+    right: var(--ui-default-spacing);
+    top: var(--ui-default-spacing);
+    bottom: var(--ui-default-spacing);
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ui-button-color);
+}
+
+.button:not(.disabled, .active):hover {
+    cursor: pointer;
+    background-color: var(--ui-button-hover-color);
+    transition: background-color 0.2s;
+}
+
+.button.disabled {
+    background-color: var(--ui-button-disabled-color);
+}
+
+.button.active {
+    background-color: var(--ui-button-active-color);
+}

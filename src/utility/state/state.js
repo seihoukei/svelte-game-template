@@ -6,6 +6,7 @@ export default class State {
         autosaveSlot : `_Autosave`,
         backupSlot : `_BACKUP`,
         defaultState : {},
+        actionsaveActive : true,
         actionsaveEvents : [],
         backupEvents : [],
         autosaveInterval : 60000,
@@ -21,12 +22,7 @@ export default class State {
         this.autosaveInterval.set(this.config.autosaveInterval)
     }
     
-    static getSlotName(slot = "") {
-        // not using default value to make it possible
-        // to address autosave slot explicitly as ""
-        if (slot === "")
-            slot = this.config.autosaveSlot
-        
+    static getSlotName(slot = this.config.autosaveSlot) {
         return `${this.config.savePrefix}_Save_${slot}`
     }
     

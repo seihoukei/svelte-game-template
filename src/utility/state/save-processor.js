@@ -1,6 +1,6 @@
 import {compressToBase64, decompressFromBase64} from "@amoutonbrady/lz-string"
-import CompressWorker from "workers/compress-worker.js?worker"
-import Workhole from ".//workhole.js"
+import CompressWorker from "./compress-worker.js?worker"
+import Workhole from "utility/workhole.js"
 
 export default class SaveProcessor {
     static #worker = new CompressWorker()

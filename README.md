@@ -23,9 +23,11 @@ Minimalistic template to base prototypes and small projects on without worrying 
   - Display meta data for save instead of ???
   - Display game title
 - game-config.js
-  - adjust all settings, most importantly `state.savePrefix`
+  - adjust all settings, most importantly `title` and `state.savePrefix`
 - init.js
   - register tooltips, dialogs and displaystring processors
+- SettngWatcher.svelte
+  - set up watchers for custom settings if relevant
 - app.css
   - Define backgrounds for custom inline-icons if relevant
   - --ui-x-color variables
@@ -76,20 +78,12 @@ Currently, element with `interactive` blocks its children with `interactive`.
 Used to shape value into a string:
 
 - `DisplayString.number` - Scientific notation, 2 decimal digits
-- `DisplayString.shortNumber` - Scientific notation, minimum decimal digits
+- `DisplayString.shortNumber` is a shorthand for `DisplayString.number` with `SHORT` format
 - `DisplayString.percentage` - fraction displayed as percentage
-- `DisplayString.time` - formats time as SSs, MM:SS or HH:MM:SS
-- `DisplayString.html` and `DisplayString.text` - apply registered replacers to the string.
-
-#### DisplayString.Processor
-
-`DisplayString.Processor` is a constructor for string processor that applies chain of replacers to givven string.
-
-Replacer is an object that has `search` field with search string or regexp to replace and fields like `html`, `text` or others with replacement string or function to apply. Array of those can be passed to Processor constructor, or they can be passed one by one to instance's `.addReplacer`
-
-Instance's `.apply(string, type)` applies every replacer with replacement provided for given type.
-
-`DisplayString` has a default processor, which can have replacers added with `DisplayStriong.addReplacer`, those are applied through `.html` and `.text` methods. 
+- `DisplayString.time` - formats time based on time format
+- `DisplayString.duration` is a shorthand for `DisplayString.time` with `SHORT_DURATION` format
+- `DisplayString.text` - applies given set of replacers to the string
+- `DisplayString.html` is a shorthand for `DisplayString.text` with `HTML` format
 
 ### Save states
 
@@ -104,3 +98,7 @@ State manipulation is performed through `State`.
 ### Dialogs
 
 `Dialogs` manages stack of displayed dialogs. Dialogs can be registered with `Dialogs.register(name, component)` and component should use `<UIDialog>` or `<UIDialog modal>` as a wrapper to its DOM content.
+
+### svelteInterval
+
+`svelte-interval` is a wrapper for setInterval that cleans up after itself, using `onMount`/`onDestroy` internally. Returns an object that has `.delay` function that can delay next interval trigger by given time. 

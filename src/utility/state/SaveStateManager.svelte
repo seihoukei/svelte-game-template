@@ -1,9 +1,10 @@
 <script>
-    import SaveProcessor from "utility/save-processor.js"
     import State from "utility/state/state.js"
 
-    import {onDestroy, onMount} from "svelte"
+    import {onMount} from "svelte"
     import Trigger from "utility/trigger-svelte.js"
+    import SaveProcessor from "utility/state/save-processor.js"
+    import svelteInterval from "utility/svelte-interval.js"
 
     const PRIORITY_FIRST = -Infinity
     const PRIORITY_LAST = Infinity
@@ -27,7 +28,7 @@
     Trigger.on("internal-command-reset-game", resetGame)
 
     for (const event of State.config.actionsaveEvents) {
-        Trigger.on(event, planSave)
+        Trigger.on(event, planActionsave)
             .setPriority(PRIORITY_LAST)
     }
 
@@ -36,21 +37,9 @@
             .setPriority(PRIORITY_FIRST)
     }
 
-    $: autosaveInterval = State.autosaveInterval
-    $: updateInterval($autosaveInterval)
-
-    let interval = null
-    function updateInterval(time) {
-
-        if (interval)
-            clearInterval(interval)
-        interval = setInterval(saveGame, time)
-    }
-
-    onDestroy(() => {
-        clearInterval(interval)
-    })
-
+    const autosaveInterval = State.autosaveInterval
+    const saveInterval = svelteInterval(saveGame, $autosaveInterval)
+    $: saveInterval.changeInterval($autosaveInterval)
 
     async function saveGame(slot = State.config.autosaveSlot) {
         clearTimeout(saveTimeout)
@@ -60,13 +49,13 @@
         const saveData = await prepareSave()
         lastSaved = performance.now()
         localStorage[State.getSlotName(slot)] = saveData
-        State.updateSaveInfo([slot])
 
+        State.updateSaveInfo([slot])
         Trigger("game-saved", slot)
     }
 
-    function planSave() {
-        if (saveTimeout)
+    function planActionsave() {
+        if (saveTimeout || !State.config.actionsaveActive)
             return
         const sinceLastSave = performance.now() - lastSaved
         if (sinceLastSave > State.config.actionsaveInterval) {

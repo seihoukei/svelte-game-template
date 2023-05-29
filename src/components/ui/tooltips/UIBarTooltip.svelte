@@ -1,5 +1,5 @@
 <script>
-    import DisplayString from "utility/display-string.js"
+    import DisplayString from "utility/display-string/display-string.js"
     import game from "stores/store-game.js"
 
     export let data

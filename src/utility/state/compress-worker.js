@@ -1,4 +1,4 @@
-import Workhole from "../utility/workhole.js"
+import Workhole from "utility/workhole.js"
 import {compressToBase64} from "@amoutonbrady/lz-string"
 
 const workhole = new Workhole(self)

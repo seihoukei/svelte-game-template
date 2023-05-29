@@ -1,7 +1,7 @@
 <script>
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
 
-    import DisplayString from "utility/display-string.js"
+    import DisplayString from "utility/display-string/display-string.js"
 
     import tooltip from "utility/tooltip/use-tooltip.js"
 

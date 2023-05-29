@@ -1,7 +1,7 @@
 <script>
     import UIMeta from "./UIMeta.svelte"
     import UIBar from "components/ui/elements/UIBar.svelte"
-    import DisplayString from "utility/display-string.js"
+    import DisplayString from "utility/display-string/display-string.js"
     import game from "stores/store-game.js"
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
@@ -11,7 +11,7 @@
 </script>
 
 {#if import.meta.env.MODE === "development"}
-    <pre class="debug">{JSON.stringify(game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
+    <pre class="debug">{JSON.stringify($game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
 {/if}
 
 {#if state}
@@ -33,9 +33,11 @@
         position: absolute;
         left : 0;
         top : 20px;
-        opacity: 0.5;
+        color: white;
+        opacity: 0.8;
         pointer-events: none;
         font-size: 8px;
+        z-index : 1000;
     }
 
     div.content {

@@ -1,0 +1,12 @@
+:root {
+    --ui-dialog-color: #777777;
+    --ui-dialog-supersection-color: #555555;
+    --ui-dialog-section-color: #444444;
+
+    --ui-button-color: #222277;
+    --ui-button-hover-color: #444499;
+    --ui-button-active-color: #6666BB;
+    --ui-button-disabled-color: #222222;
+
+    --ui-default-spacing: 1rem;
+}
