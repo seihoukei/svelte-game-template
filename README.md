@@ -25,7 +25,7 @@ Minimalistic template to base prototypes and small projects on without worrying 
 - game-config.js
   - adjust all settings, most importantly `title` and `state.savePrefix`
 - init.js
-  - register tooltips, dialogs and displaystring processors
+  - register tooltips, dialogs processors
 - SettngWatcher.svelte
   - set up watchers for custom settings if relevant
 - app.css

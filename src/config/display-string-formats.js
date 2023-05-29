@@ -1,3 +1,5 @@
+import DisplayString from "utility/display-string/display-string.js"
+
 const MINUTE_SECONDS = 60
 const HOUR_MINUTES = 60
 const DAY_HOURS = 24
@@ -146,7 +148,10 @@ const DISPLAY_STRING_FORMATS = {
         SHORT: {
             cutTrailingZeroes : true,
         },
-    }
+        UNITS: {
+            postfixes: DisplayString.NUMBER_POSTFIXES.UNITS,
+        }
+    },
 }
 
 export default DISPLAY_STRING_FORMATS

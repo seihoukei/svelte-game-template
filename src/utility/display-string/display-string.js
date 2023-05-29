@@ -1,21 +1,27 @@
 import DISPLAY_STRING_TIME_ELEMENTS from "utility/display-string/display-string-time-elements.js"
+import DISPLAY_STRING_NUMBER_POSTFIXES from "utility/display-string/display-string-number-postfixes.js"
 
 export default class DisplayString {
     static TIME_ELEMENTS = DISPLAY_STRING_TIME_ELEMENTS
+    static NUMBER_POSTFIXES = DISPLAY_STRING_NUMBER_POSTFIXES
     
     static TIME_FORMATS = {}
     static STRING_FORMATS = {}
     static NUMBER_FORMATS = {}
     
+    
     static config = {
-        numberLength : 7,
+        numberPostfixes : this.NUMBER_POSTFIXES.DEFAULT,
+        numberUseCeil : false,
+        numberLength : 10,
         numberDigits : 4,
-        numberEStep : 3,
+        numberEStep : 1,
         numberEPlus : false,
-        numberEThreshold : 9,
+        numberEThreshold : 6,
         numberEFractionThreshold : -3,
         numberZeroThreshold : 1e-300,
         numberCutTrailingZeroes : false,
+        numberDynamicDigits : true,
     }
     
     static applyConfig(config) {
@@ -76,40 +82,87 @@ export default class DisplayString {
             : this.time(time)
     }
     
+    static #cutTrailingPeriod(string) {
+        return string.at(-1) === "."
+            ? string.slice(0, -1)
+            : string
+    }
+    
+    static #cutTrailingZeroes(string) {
+        if (string.indexOf(".") === -1)
+            return string
+        let zeroes = 0
+        while (string.at(-zeroes - 1) === "0")
+            zeroes++
+        
+        return zeroes
+            ? this.#cutTrailingPeriod(string.slice(0, -zeroes))
+            : this.#cutTrailingPeriod(string)
+    }
+    
+    static #round(value, useCeil) {
+        //1e9 rounding is to fix floating point errors offsetting 00s into 99s
+        const fixedValue = Math.round(value * 1e9) / 1e9
+        return useCeil
+            ? Math.ceil(fixedValue)
+            : Math.floor(fixedValue)
+    }
+    
+    static #formatNaturalValue(value, log10, digits, maxLength, dynamicDigits, cutTrailingZeroes, useCeil) {
+        const baseLength = log10 + (value < 0 ? 2 : 1)
+        if (dynamicDigits && digits < baseLength) {
+            return this.#round(value, useCeil).toFixed(0)
+        }
+        const length = Math.max(log10, 0) + 1
+        const scale = 10 ** (dynamicDigits ? digits - length : digits)
+        const displayValue = this.#round(value * scale, useCeil) / scale
+        const fixedDigits = dynamicDigits
+            ? Math.max(0, digits - length)
+            : digits
+        const baseString = displayValue.toFixed(fixedDigits).slice(0, Math.max(baseLength + 1, maxLength))
+        
+        return cutTrailingZeroes
+            ? this.#cutTrailingZeroes(baseString)
+            : this.#cutTrailingPeriod(baseString)
+    }
+    
     static number(value, {
         zeroThreshold = this.config.numberZeroThreshold,
         digits = this.config.numberDigits,
         maxLength = this.config.numberLength,
+        useCeil = this.config.numberUseCeil,
         eStep = this.config.numberEStep,
         ePlus = this.config.numberEPlus,
         eThreshold= this.config.numberEThreshold,
-        fractionThreshold = this.config.numberEFractionThreshold,
+        eFractionThreshold = this.config.numberEFractionThreshold,
         cutTrailingZeroes = this.config.numberCutTrailingZeroes,
+        dynamicDigits = this.config.numberDynamicDigits,
+        postfixes = this.config.numberPostfixes,
     } = {}) {
-        const absoluteValue = Math.abs(value)
-        return absoluteValue < 1e-2 && value !== 0 ? value.toExponential(2)
-            : absoluteValue < 10000 ? value.toFixed(2)
-            : absoluteValue < 100000 ? value.toFixed(1)
-            : absoluteValue < 1000000 ? value.toFixed(0)
-            : value.toExponential(2)
-/*            let s = Math.sign(x)
-            let e = Math.max(0, Math.log(s * x) / Math.log(10))
-            let o = 2 - Math.floor(e % 3)
-            e = Math.floor(e / 3)
-            let m = x / 10 ** (e * 3)
-            m = (Math.trunc(m * 10 ** o) / 10 ** o).toString()
-            let d = m.length
-            if (s === -1)
-                d--
+//        const sign = Math.sign(value)
+        const absolute = Math.abs(value)
+        if (absolute < zeroThreshold || absolute === 0)
+            return this.#formatNaturalValue(0, 0, digits, maxLength, dynamicDigits, cutTrailingZeroes, useCeil)
+    
+        const log10 = Math.floor(Math.log10(absolute))
+    
+        if (log10 >= eThreshold || log10 < eFractionThreshold) {
+            const e = Math.floor(log10 / eStep) * eStep
+            const baseValue = value / 10 ** e
+            const eString = `e${ePlus && e > 0 ? "+" : ""}${e}`
         
-            if (o === 2 && d === 1)
-                m = `${m}.00`
-            if (o === 2 && d === 3)
-                m = `${m}0`
-            if (o === 1 && d === 2)
-                m = `${m}.0`
-        
-            return `${m}${SUFFIX[e]}`*/
+            return `${this.#formatNaturalValue(baseValue, log10 - e, digits, maxLength - eString.length, dynamicDigits, cutTrailingZeroes, useCeil)}${eString}`
+        }
+
+        const e3 = Math.floor(log10 / 3) * eStep
+        const postfix = postfixes?.codes?.[e3 - (postfixes?.start ?? 0)] ?? ""
+        if (postfix !== "") {
+            const e = e3 * 3
+            const baseValue = value / 10 ** e
+            return `${this.#formatNaturalValue(baseValue, log10 - e, digits, maxLength - postfix.length, dynamicDigits, cutTrailingZeroes, useCeil)}${postfix}`
+        }
+    
+        return this.#formatNaturalValue(value, log10, digits, maxLength, dynamicDigits, cutTrailingZeroes, useCeil)
     }
     
     static shortNumber(value) {
@@ -173,15 +226,7 @@ export default class DisplayString {
         }
         
         if (data.precision && data.cutTrailingZeroes) {
-            let zeroes = 0
-            while (string.at(-zeroes - 1) === "0")
-                zeroes++
-            
-            if (zeroes > 0) {
-                if (string.at(-zeroes - 1) === ".")
-                    zeroes++
-                string = string.slice(0, -zeroes)
-            }
+            string = this.#cutTrailingZeroes(string)
         }
         
         if (data.postfix)
