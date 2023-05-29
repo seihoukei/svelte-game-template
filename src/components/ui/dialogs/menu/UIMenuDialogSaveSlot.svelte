@@ -21,7 +21,7 @@
 
 </script>
 
-<div class="horizontal centered flex save">
+<div class="horizontal centered flex dialog-section save">
     <div class="button"
          use:interactive
          on:basicaction={() => save()}
@@ -52,7 +52,6 @@
 
 <style>
     div.save {
-        background-color: var(--ui-dialog-section-color);
         border-radius: 0.5em;
     }
 
@@ -64,7 +63,7 @@
     }
 
     div.saveinfo {
-        font-size: 0.75em;
+        font-size: 0.7em;
         width: 20em;
         height: 2em;
     }

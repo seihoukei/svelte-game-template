@@ -9,11 +9,17 @@
     $: currentTime = state?.time ?? 0
     $: targetTime = state?.targetTime ?? 0
     $: catchingUp = targetTime - currentTime > 10
+
+    async function reset() {
+        if (await Dialogs.confirm("Reset game?")) {
+            State.reset()
+        }
+    }
 </script>
 
 <div class="gapped flex">
     <button on:click={() => Dialogs.open("menu")}>Menu</button>
-    <button on:click={() => confirm("Reset game?") && State.reset()}>Reset game</button>
+    <button on:click={reset}>Reset game</button>
     <span class="time">
         {DisplayString.time(currentTime)}
         {#if catchingUp}

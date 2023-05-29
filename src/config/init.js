@@ -1,5 +1,6 @@
 import UIBarTooltip from "components/ui/tooltips/UIBarTooltip.svelte"
 import UIMenuDialog from "components/ui/dialogs/menu/UIMenuDialog.svelte"
+import UIModalDialog from "utility/dialog/UIModalDialog.svelte"
 import UISettingsDialog from "components/ui/dialogs/settings/UISettingsDialog.svelte"
 
 import DisplayString from "utility/display-string/display-string.js"
@@ -16,6 +17,7 @@ import DISPLAY_STRING_FORMATS from "config/display-string-formats.js"
 export default function init() {
     Wakelock.enable()
 
+    Dialogs.register("_modal_dialog", UIModalDialog)
     Dialogs.register("menu", UIMenuDialog)
     Dialogs.register("settings", UISettingsDialog)
     

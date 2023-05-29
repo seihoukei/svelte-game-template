@@ -59,21 +59,21 @@
                 </div>
             {/each}
         </div>
-        <div class="vertical gapped flex settings">
+        <div class="vertical gapped flex dialog-supersection settings">
             {#each settingsList as setting}
                 <UISettingsDialogSetting {setting} />
             {/each}
         </div>
         {#if category === NUMBERS_CATEGORY}
-            <div class="centered horizontal flex previews"
+            <div class="centered horizontal flex dialog-supersection previews"
                  use:interactive
                  on:basicaction={() => advancePreview(1)}
                  on:specialaction={() => advancePreview(-1)}
             >
                 {#key settings}
-                    <div class="centered flex preview">{DisplayString.time(previewNumber, DisplayString.TIME_FORMATS.DETAILED)}</div>
-                    <div class="centered flex preview">{DisplayString.number(previewNumber)}</div>
-                    <div class="centered flex preview">{DisplayString.percentage(previewNumber)}</div>
+                    <div class="centered flex dialog-section preview">{DisplayString.time(previewNumber, DisplayString.TIME_FORMATS.DETAILED)}</div>
+                    <div class="centered flex dialog-section preview">{DisplayString.number(previewNumber)}</div>
+                    <div class="centered flex dialog-section preview">{DisplayString.percentage(previewNumber)}</div>
                 {/key}
             </div>
         {/if}
@@ -121,6 +121,7 @@
         width : 1.5em;
         height : 1.5em;
         padding: 0;
+        border-radius: 0.5em;
     }
 
     div.previews {

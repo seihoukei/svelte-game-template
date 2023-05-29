@@ -31,8 +31,8 @@
         Dialogs.closeAll()
     }
 
-    function resetState() {
-        if (!confirm("Reset game?"))
+    async function resetState() {
+        if (!await Dialogs.confirm("Reset game?"))
             return
         State.reset()
         Dialogs.closeAll()
@@ -60,34 +60,36 @@
             X
         </div>
 
-        <div class="centered flex time">
-            Play time: {DisplayString.time(currentTime)}
-            {#if catchingUp}
-                / {DisplayString.time(targetTime)}
-            {/if}
-        </div>
-
-        <div class="stretched vertical flex saves">
-            {#each SLOTS as slot}
-                <UIMenuDialogSaveSlot {slot} />
-            {/each}
-            <div class="horizontal centered flex save">
-                <div class="button"
-                     use:interactive
-                     on:basicaction={exportSave}
-                >Export >></div>
-                <input class="savetext" placeholder="Paste save here" bind:value={saveText}/>
-                <div class="button"
-                     use:interactive
-                     on:basicaction={() => importSave(true)}
-                     on:specialaction={() => importSave(false)}
-                >>> Import</div>
+        <div class="stretched gapped em-padded em-rounded vertical flex dialog-supersection">
+            <div class="centered flex time">
+                Play time: {DisplayString.time(currentTime)}
+                {#if catchingUp}
+                    / {DisplayString.time(targetTime)}
+                {/if}
             </div>
-            <div class="centered flex savehint">
-                Right-click/long-tap to load without adding offline time.
-            </div>
-        </div>
 
+            <div class="stretched vertical flex saves">
+                {#each SLOTS as slot}
+                    <UIMenuDialogSaveSlot {slot} />
+                {/each}
+                <div class="horizontal centered flex dialog-section save">
+                    <div class="button"
+                         use:interactive
+                         on:basicaction={exportSave}
+                    >Export >></div>
+                    <input class="savetext" placeholder="Paste save here" bind:value={saveText}/>
+                    <div class="button"
+                         use:interactive
+                         on:basicaction={() => importSave(true)}
+                         on:specialaction={() => importSave(false)}
+                    >>> Import</div>
+                </div>
+                <div class="centered flex savehint">
+                    Right-click/long-tap to load without adding offline time.
+                </div>
+            </div>
+
+        </div>
 
         <div class="horizontal gapped flex buttons">
             <div class="button" use:interactive
@@ -115,7 +117,6 @@
     }
 
     div.save {
-        background-color: var(--ui-dialog-section-color);
         border-radius: 0.5em;
     }
 
@@ -131,15 +132,9 @@
     }
 
     input.savetext {
-        font-size: 0.75em;
+        font-size: 0.7em;
         width: 20em;
         height: 2em;
-        border: none;
-        margin: 0;
-        padding: 0;
-        color: inherit;
-        text-align: center;
-        background-color: var(--ui-dialog-section-color);
     }
 
     div.close.button {

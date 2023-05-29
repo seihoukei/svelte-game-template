@@ -5,7 +5,6 @@
     import game from "stores/store-game.js"
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
-    import UINumberTest from "components/UINumberTest.svelte"
 
     $: state = $game?.state ?? null
 
@@ -24,7 +23,6 @@
             {@html DisplayString.html(`You have ~logo~${state.bar?.count} from maxed out bars`)}
         </div>
     </div>
-    <UINumberTest />
 
     <UIDialogs />
     <UIToolTip />
