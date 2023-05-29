@@ -1,5 +1,6 @@
 import GAME_SETTINGS from "utility/settings/game-settings.js"
 import GAME_SETTINGS_CATEGORIES from "utility/settings/game-settings-categories.js"
+import Trigger from "utility/trigger-svelte.js"
 
 export default class Settings {
     static DEFAULTS = this.#getDefaults()

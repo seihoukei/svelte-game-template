@@ -17,11 +17,7 @@
         <div class="vertical flex">
         {#each list as item}
             <div>
-                {DisplayString.number(item, {
-                    postfixes : DisplayString.NUMBER_POSTFIXES.DEFAULT,
-                    eThreshold : 9,
-//                    eFractionThreshold : -15,
-                })}
+                {DisplayString.number(item)}
             </div>
         {/each}
         </div>

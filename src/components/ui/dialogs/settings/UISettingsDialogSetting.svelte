@@ -26,7 +26,7 @@
     }
 </script>
 
-{#if !data.displayCondition || data.displayCondition()}
+{#if !data.displayCondition || data.displayCondition(settings)}
     {#if data.toggle}
         <div class="centered flex setting">
             <label>
@@ -75,9 +75,15 @@
         transform: scale(1.5, 1.5) translate(0, -0.2em);
     }
 
+    div.values {
+        flex-wrap : wrap;
+        justify-content: center;
+    }
+
     div.value.button {
         height: 1.5em;
-        width: 4em;
+        min-width: 3em;
+        padding: 0 1em;
         border-radius: 1rem;
     }
 

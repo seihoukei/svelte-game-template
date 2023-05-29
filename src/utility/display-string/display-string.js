@@ -26,6 +26,7 @@ export default class DisplayString {
     
     static applyConfig(config) {
         Object.assign(this.config, config)
+        this.config.numberPostfixes = this.NUMBER_POSTFIXES[this.config.numberPostfixes] ?? this.config.numberPostfixes ?? this.NUMBER_POSTFIXES.NONE
     }
     
     static setTimeFormats(formats) {
@@ -169,18 +170,10 @@ export default class DisplayString {
         return this.number(value, this.NUMBER_FORMATS.SHORT)
     }
     
-    static percentage(value, digits = null) {
+    static percentage(value, format = {}) {
         const percent = value * 100
         
-        let displayValue = percent < 10000 && percent > -10000
-            ? percent.toFixed(2)
-            : percent.toExponential(2)
-        
-        displayValue = displayValue
-            .replace(/(?<!e.*)(?<=\..*)0*$/,"")
-            .replace(/\.$/,"")
-        
-        return `${displayValue}%`
+        return `${this.number(percent, format)}%`
     }
     
     static html(string) {

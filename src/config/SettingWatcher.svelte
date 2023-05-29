@@ -30,10 +30,25 @@
         autosaveInterval,
     })
 
-    //TODO apply number display settings
+    $: numberPostfixes = settings.numberPostfixes ?? GAME_CONFIG.displayString.numberPostfixes
+    $: numberEThreshold = settings.numberEThreshold ?? GAME_CONFIG.displayString.numberEThreshold
+    $: numberEFractionThreshold = settings.numberEFractionThreshold ?? GAME_CONFIG.displayString.numberEFractionThreshold
+    $: numberEStep = settings.numberEStep ?? GAME_CONFIG.displayString.numberEStep
+    $: numberEPlus = settings.numberEPlus ?? GAME_CONFIG.displayString.numberEPlus
+    $: numberDynamicDigits = settings.numberDynamicDigits ?? GAME_CONFIG.displayString.numberDynamicDigits
+    $: numberSignificantFigures = settings.numberSignificantFigures ?? GAME_CONFIG.displayString.numberDigits
+    $: numberDecimalDigits = settings.numberDecimalDigits ?? GAME_CONFIG.displayString.numberDigits
+    $: numberShowTrailingZeroes = settings.numberShowTrailingZeroes ?? !GAME_CONFIG.displayString.numberCutTrailingZeroes
+
     $: DisplayString.applyConfig({
-
+        numberPostfixes,
+        numberEThreshold,
+        numberEFractionThreshold,
+        numberEStep,
+        numberEPlus,
+        numberDynamicDigits,
+        numberDigits : numberDynamicDigits ? numberSignificantFigures : numberDecimalDigits,
+        numberCutTrailingZeroes : !numberShowTrailingZeroes,
     })
-
 
 </script>

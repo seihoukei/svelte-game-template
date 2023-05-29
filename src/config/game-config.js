@@ -32,6 +32,17 @@ const GAME_CONFIG = {
     },
     
     displayString: {
+        numberPostfixes : "DEFAULT",
+        numberUseCeil : false,
+        numberLength : 10,
+        numberDigits : 3,
+        numberEStep : 1,
+        numberEPlus : false,
+        numberEThreshold : 9,
+        numberEFractionThreshold : -2,
+        numberZeroThreshold : 1e-9,
+        numberCutTrailingZeroes : false,
+        numberDynamicDigits : true,
     },
     
     settings: {

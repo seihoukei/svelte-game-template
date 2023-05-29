@@ -7,12 +7,14 @@
     import UISettingsDialogSetting from "components/ui/dialogs/settings/UISettingsDialogSetting.svelte"
     import DisplayString from "utility/display-string/display-string.js"
     import svelteInterval from "utility/svelte-interval.js"
+    import game from "stores/store-game.js"
 
     const NUMBERS_CATEGORY = "numbers"
     export let data
 
     let category = Settings.CATEGORY_LIST[0]
     $: settingsList = Settings.CATEGORY_SETTINGS_LIST[category] ?? []
+    $: settings = $game?.state?.settings
 
     let previewNumber = 123456789
 
@@ -68,9 +70,11 @@
                  on:basicaction={() => advancePreview(1)}
                  on:specialaction={() => advancePreview(-1)}
             >
-                <div class="centered flex preview">{DisplayString.time(previewNumber, DisplayString.TIME_FORMATS.DETAILED)}</div>
-                <div class="centered flex preview">{DisplayString.number(previewNumber)}</div>
-                <div class="centered flex preview">{DisplayString.percentage(previewNumber)}</div>
+                {#key settings}
+                    <div class="centered flex preview">{DisplayString.time(previewNumber, DisplayString.TIME_FORMATS.DETAILED)}</div>
+                    <div class="centered flex preview">{DisplayString.number(previewNumber)}</div>
+                    <div class="centered flex preview">{DisplayString.percentage(previewNumber)}</div>
+                {/key}
             </div>
         {/if}
     </div>
@@ -90,6 +94,8 @@
 
     div.categories {
         border-radius: 1rem;
+        flex-wrap : wrap;
+        justify-content: center;
     }
 
     div.button {
@@ -122,6 +128,7 @@
         overflow: hidden;
         border-radius: 1rem;
         justify-content: space-around;
+        flex-shrink: 0;
     }
 
     div.preview {
