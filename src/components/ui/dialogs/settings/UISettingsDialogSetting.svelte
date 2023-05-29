@@ -82,7 +82,7 @@
 
     div.value.button {
         height: 1.5em;
-        min-width: 3em;
+        min-width: 2em;
         padding: 0 1em;
         border-radius: 1rem;
     }

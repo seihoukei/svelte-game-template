@@ -21,9 +21,9 @@
     <button on:click={() => Dialogs.open("menu")}>Menu</button>
     <button on:click={reset}>Reset game</button>
     <span class="time">
-        {DisplayString.time(currentTime)}
+        {DisplayString.time(currentTime, DisplayString.TIME_FORMATS.LONG_3_ITEMS)}
         {#if catchingUp}
-            / {DisplayString.time(targetTime)}
+            / {DisplayString.time(targetTime, DisplayString.TIME_FORMATS.LONG_3_ITEMS)}
         {/if}
     </span>
 </div>
