@@ -12,10 +12,8 @@
         .filter(([x]) => x)
 
     $: cssVariables = `\
-        --tooltip-x:${x + 12}px;\
-        --tooltip-y:${y+ 2}px;\
-        --translate-x:${x > window.innerWidth / 2 ? "calc(-100% - 15px)" : "0"};\
-        --translate-y:${y > window.innerHeight / 2 ? "calc(-100% + 20px)" : "0"};\
+        --tooltip-x:${x > window.innerWidth / 2 ? `calc(-100% + ${x - 3}px)` : `${x + 12}px`};\
+        --tooltip-y:${y > window.innerHeight / 2 ? `calc(-100% + ${y + 22}px)` : `${y + 2}px`};\
     `
 
 </script>
@@ -36,14 +34,14 @@
 <style>
     div.tooltip {
         position: absolute;
-        left : var(--tooltip-x);
-        top : var(--tooltip-y);
+        left : 0;
+        top : 0;
         padding : 0.5em;
         background-color: #222222;
         border: 1px solid #777777;
         font-size: 16px;
         pointer-events: none;
-        transform: translate(var(--translate-x), var(--translate-y));
+        transform: translate(var(--tooltip-x), var(--tooltip-y));
         z-index : 1000;
         white-space: pre-line;
     }

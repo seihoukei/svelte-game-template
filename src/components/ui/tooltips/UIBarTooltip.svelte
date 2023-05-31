@@ -4,15 +4,24 @@
 
     export let data
 
-    $: index = data
+    $: index = data ?? 0
 
-    $: state = $game?.state ?? {}
-    $: bar = state?.bars[index] ?? {}
-    $: lastBar = state?.bars[index - 1] ?? {}
+    $: bars = $game?.state?.bars ?? []
+    $: bar = bars[index] ?? {}
+    $: lastBar = bars[index - 1] ?? {}
+    $: time = $game?.state?.time ?? 0
+
+    $: current = bar.current ?? 0
+    $: max = bar.max ?? 0
+    $: progress = bar.current / bar.max || 0 //NaN safeguard
+    $: speed = lastBar.outputSpeed ?? 0
+    $: currentTime = time - bar.lastReset
+    $: ETA = currentTime / current * (max - current) || 0
 </script>
 
-Bar #{data}
+Bar #{index + 1}
 
-Progress: {DisplayString.number(bar.current ?? 0)} / {DisplayString.shortNumber(bar.max ?? 0)} ({DisplayString.percentage(bar.current / bar.max || 0)})
-Current Speed: {DisplayString.number(lastBar.outputSpeed ?? 0)}
-Output Speed: {DisplayString.number(bar.outputSpeed ?? 0)}
+Progress: {DisplayString.number(current)} / {DisplayString.shortNumber(max)} ({DisplayString.percentage(progress)})
+Speed: {DisplayString.number(speed)}
+Time since zero: {DisplayString.time(currentTime, DisplayString.TIME_FORMATS.SHORT_DURATION)}
+ETA: {DisplayString.time(ETA, DisplayString.TIME_FORMATS.SHORT_DURATION)}
