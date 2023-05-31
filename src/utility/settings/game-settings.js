@@ -211,4 +211,21 @@ const GAME_SETTINGS = {
     ...GAME_CONFIG.settings.customSettings
 }
 
+if (import.meta.env.MODE === "development") {
+    Object.assign(GAME_SETTINGS, {
+        debugInfo: {
+            category: "debug",
+            displayName: "Display debug info",
+            defaultValue: true,
+            toggle : true,
+            global : true,
+            values: [{
+                value : false,
+            }, {
+                value : true,
+            }],
+        }
+    })
+}
+
 export default GAME_SETTINGS

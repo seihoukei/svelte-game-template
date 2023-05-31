@@ -13,6 +13,7 @@
 
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="absolute fullsize centered flex holder" on:click={close} bind:this={holder}>
     <div class="dialog">
         <slot />

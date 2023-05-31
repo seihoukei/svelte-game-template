@@ -10,7 +10,9 @@
     import game from "stores/store-game.js"
 
     const NUMBERS_CATEGORY = "numbers"
-    export let data
+
+    // svelte-ignore unused-export-let
+    export let data = {}
 
     let category = Settings.CATEGORY_LIST[0]
     $: settingsList = Settings.CATEGORY_SETTINGS_LIST[category] ?? []
@@ -107,7 +109,6 @@
 
     div.settings {
         flex-grow: 1;
-        background-color: var(--ui-dialog-supersection-color);
         overflow: hidden auto;
         border-radius: 1rem;
         padding: 1rem;
@@ -125,7 +126,6 @@
     }
 
     div.previews {
-        background-color: var(--ui-dialog-supersection-color);
         overflow: hidden;
         border-radius: 1rem;
         justify-content: space-around;
@@ -133,7 +133,6 @@
     }
 
     div.preview {
-        background-color: var(--ui-dialog-section-color);
         border-radius: 1rem;
         width : 6em;
         padding: 0 1em;

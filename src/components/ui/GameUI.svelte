@@ -10,7 +10,7 @@
 
 </script>
 
-{#if import.meta.env.MODE === "development"}
+{#if import.meta.env.MODE === "development" && (!state || state.settings.debugInfo)}
     <pre class="debug">{JSON.stringify($game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
 {/if}
 
@@ -34,7 +34,7 @@
         left : 0;
         top : 20px;
         color: white;
-        opacity: 0.8;
+        opacity: 0.3;
         pointer-events: none;
         font-size: 8px;
         z-index : 1000;

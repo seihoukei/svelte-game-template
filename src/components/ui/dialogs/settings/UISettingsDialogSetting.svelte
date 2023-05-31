@@ -28,7 +28,7 @@
 
 {#if !data.displayCondition || data.displayCondition(settings)}
     {#if data.toggle}
-        <div class="centered flex setting">
+        <div class="centered flex dialog-section setting">
             <label>
                 <input type="checkbox"
                        bind:checked
@@ -38,7 +38,7 @@
             </label>
         </div>
     {:else}
-        <div class="vertical centered flex setting">
+        <div class="vertical centered flex dialog-section setting">
             <div class="name">
                 {data.displayName ?? "???"}
             </div>
@@ -59,7 +59,6 @@
 
 <style>
     div.setting {
-        background-color: var(--ui-dialog-section-color);
         border-radius: 1rem;
         padding: 0.5rem 0;
         row-gap: 0.5rem;
@@ -72,7 +71,7 @@
     }
 
     div.setting label input {
-        transform: scale(1.5, 1.5) translate(0, -0.2em);
+        transform: scale(1.5, 1.5) translate(0, -0.1em);
     }
 
     div.values {

@@ -15,6 +15,8 @@ import GAME_CONFIG from "config/game-config.js"
 import DISPLAY_STRING_FORMATS from "config/display-string-formats.js"
 
 export default function init() {
+    document.title = GAME_CONFIG.title
+    
     Wakelock.enable()
 
     Dialogs.register("_modal_dialog", UIModalDialog)

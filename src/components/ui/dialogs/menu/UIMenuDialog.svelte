@@ -7,10 +7,12 @@
     import Dialogs from "utility/dialog/dialogs.js"
     import UIDialog from "utility/dialog/UIDialog.svelte"
     import UIMenuDialogSaveSlot from "components/ui/dialogs/menu/UIMenuDialogSaveSlot.svelte"
+    import GAME_CONFIG from "config/game-config.js"
 
     const SLOTS = [State.config.autosaveSlot,"SAVE1","SAVE2","SAVE3"]
-    export let data
 
+    // svelte-ignore unused-export-let
+    export let data = {}
 
     let saveText = ""
 
@@ -51,7 +53,7 @@
 <UIDialog>
     <div class="relative vertical centered spaced flex container">
         <div class="centered flex title">
-            Game title
+            {GAME_CONFIG.title}
         </div>
         <div class="close button"
              use:interactive
@@ -62,7 +64,7 @@
 
         <div class="stretched gapped em-padded em-rounded vertical flex dialog-supersection">
             <div class="centered flex time">
-                Play time: {DisplayString.time(currentTime)}
+                Play time: {DisplayString.time(currentTime, DisplayString.TIME_FORMATS.LONG_3_ITEMS)}
                 {#if catchingUp}
                     / {DisplayString.time(targetTime)}
                 {/if}

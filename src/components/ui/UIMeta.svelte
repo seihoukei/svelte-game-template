@@ -4,6 +4,7 @@
     import State from "utility/state/state.js"
 
     import game from "stores/store-game.js"
+    import GAME_CONFIG from "config/game-config.js"
 
     $: state = $game?.state
     $: currentTime = state?.time ?? 0
@@ -17,7 +18,7 @@
     }
 </script>
 
-<div class="gapped flex">
+<div class="gapped flex meta">
     <button on:click={() => Dialogs.open("menu")}>Menu</button>
     <button on:click={reset}>Reset game</button>
     <span class="time">
@@ -26,8 +27,17 @@
             / {DisplayString.time(targetTime, DisplayString.TIME_FORMATS.LONG_3_ITEMS)}
         {/if}
     </span>
+    <span class="title">
+        {GAME_CONFIG.title}
+    </span>
 </div>
 
 <style>
+    div.meta {
+        flex-direction: row-reverse;
+    }
 
+    span.title {
+        flex-grow: 1;
+    }
 </style>
