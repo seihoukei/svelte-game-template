@@ -4,11 +4,15 @@
 
     export let data
 
+    $: index = data
+
     $: state = $game?.state ?? {}
-    $: bar = state?.bar ?? {}
+    $: bar = state?.bars[index] ?? {}
+    $: lastBar = state?.bars[index - 1] ?? {}
 </script>
 
-Bar
+Bar #{data}
 
-Data: {DisplayString.number(data.current)} / {DisplayString.shortNumber(data.max)}
-State: {DisplayString.number(bar.current ?? 0)} / {DisplayString.shortNumber(bar.max ?? 0)} ({DisplayString.percentage(bar.current / bar.max || 0)})
+Progress: {DisplayString.number(bar.current ?? 0)} / {DisplayString.shortNumber(bar.max ?? 0)} ({DisplayString.percentage(bar.current / bar.max || 0)})
+Current Speed: {DisplayString.number(lastBar.outputSpeed ?? 0)}
+Output Speed: {DisplayString.number(bar.outputSpeed ?? 0)}

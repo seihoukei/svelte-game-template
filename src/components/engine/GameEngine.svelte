@@ -1,5 +1,5 @@
 <script>
-    import GameBar from "components/engine/elements/GameBar.svelte"
+    import GameBars from "components/engine/elements/GameBars.svelte"
     import SaveStateManager from "utility/state/SaveStateManager.svelte"
     import GameSettings from "utility/settings/GameSettings.svelte"
     import GameTimer from "utility/timer/GameTimer.svelte"
@@ -49,7 +49,7 @@
 
 {#key gameId}
     {#if state}
-        <GameBar bind:bar={state.bar} />
+        <GameBars bind:bars={state.bars} />
 
         <GameSettings bind:settings={state.settings} />
         <GameTimer {milestoneFunction}

@@ -1,24 +1,21 @@
 <script>
     import Trigger from "utility/trigger-svelte.js"
 
-    export let bar = {
-        current : 0,
-        max : 10,
-        count : 0,
-    }
+    export let current = 0
+    export let max = 10
+    export let speed = 1
+    export let outputSpeed = 1
+    export let id
 
     Trigger.on("command-advance", advance)
 
-    function advance(time) {
-        if (!bar)
-            return
+    $: outputSpeed = speed * current / max
 
-        bar.current += time
-        while (bar.current >= bar.max) {
-            bar.current -= bar.max
-            bar.max *= 2
-            bar.count += 1
-            Trigger("bar-maxed")
+    function advance(time) {
+        current += time * speed
+        while (current >= max) {
+            current -= max
+            Trigger("bar-maxed", id)
         }
     }
 

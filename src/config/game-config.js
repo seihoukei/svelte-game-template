@@ -22,7 +22,7 @@ const GAME_CONFIG = {
     
     timer: {
         maxTickTime: 3600,
-        maxStepTime: 60,
+        maxStepTime: 1,
         rate : 30,      //settings.dataFPS
         boost : 1,
     },

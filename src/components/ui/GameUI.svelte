@@ -7,20 +7,24 @@
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
 
     $: state = $game?.state ?? null
-
+    $: bars = state?.bars ?? []
 </script>
 
-{#if import.meta.env.MODE === "development" && (!state || state.settings.debugInfo)}
+{#if import.meta.env.MODE === "development" && (!state || state?.settings?.debugInfo)}
     <pre class="debug">{JSON.stringify($game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
 {/if}
 
 {#if state}
 
     <UIMeta />
-    <div class="content">
-        <UIBar bar={state.bar} />
+    <div class="vertical gapped flex content">
         <div class="icon-text">
-            {@html DisplayString.html(`You have ~logo~${state.bar?.count} from maxed out bars`)}
+            {@html DisplayString.html(`You have ~logo~${bars.length} bars`)}
+        </div>
+        <div class="gapped stretched vertical flex bars">
+            {#each bars as bar, index}
+                <UIBar {bar} {index} />
+            {/each}
         </div>
     </div>
 
@@ -41,10 +45,11 @@
     }
 
     div.content {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        margin: 50px 0;
+        position: absolute;
+        left: 1rem;
+        top : 1rem;
+        bottom : 1rem;
+        right : 1rem;
     }
 
     div.icon-text {
@@ -52,6 +57,9 @@
         align-items: center;
         justify-content: center;
         font-size: 2em;
+    }
 
+    div.bars {
+        overflow: hidden auto;
     }
 </style>
