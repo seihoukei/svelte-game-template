@@ -5,6 +5,7 @@
     import Trigger from "utility/trigger-svelte.js"
     import SaveProcessor from "utility/state/save-processor.js"
     import svelteInterval from "utility/svelte-interval.js"
+    import Timer from "utility/timer/timer.js"
 
     const PRIORITY_FIRST = -Infinity
     const PRIORITY_LAST = Infinity
@@ -78,6 +79,7 @@
     }
 
     function resetGame() {
+        Timer.cancelAdvance()
         state = Object.create(null)
         id = Math.random()
         Object.assign(state, structuredClone(State.config.defaultState))

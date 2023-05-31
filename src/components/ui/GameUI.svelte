@@ -47,7 +47,7 @@
     div.content {
         position: absolute;
         left: 1rem;
-        top : 1rem;
+        top : 2rem;
         bottom : 1rem;
         right : 1rem;
     }

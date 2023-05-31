@@ -9,14 +9,13 @@
 
     Trigger.on("command-advance", advance)
 
-    $: outputSpeed = speed * current / max
-
     function advance(time) {
         current += time * speed
         while (current >= max) {
             current -= max
             Trigger("bar-maxed", id)
         }
+        outputSpeed = speed * current / max
     }
 
 </script>

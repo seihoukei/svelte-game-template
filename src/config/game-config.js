@@ -22,9 +22,10 @@ const GAME_CONFIG = {
     
     timer: {
         maxTickTime: 3600,
-        maxStepTime: 1,
+        maxStepTime: 60,
         rate : 30,      //settings.dataFPS
         boost : 1,
+        svelteTickEveryStep : true,
     },
     
     tooltip: {
