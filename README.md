@@ -26,11 +26,11 @@ Minimalistic template to base prototypes and small projects on without worrying 
   - adjust all settings, most importantly `title` and `state.savePrefix`
 - init.js
   - register tooltips, dialogs processors
-- SettngWatcher.svelte
+- SettingWatcher.svelte
   - set up watchers for custom settings if relevant
-- app.css
-  - Define backgrounds for custom inline-icons if relevant
-  - --ui-x-color variables
+- `.css` files
+  - Define backgrounds for custom inline-icons if relevant (`icons.css`)
+  - --ui-x-color variables (`variables.css`)
 
 ## Important notes
 

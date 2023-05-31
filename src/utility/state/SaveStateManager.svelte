@@ -80,7 +80,7 @@
     function resetGame() {
         state = Object.create(null)
         id = Math.random()
-        Object.assign(state, State.config.defaultState)
+        Object.assign(state, structuredClone(State.config.defaultState))
     }
 
 

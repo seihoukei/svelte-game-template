@@ -1,8 +1,6 @@
 import GAME_CONFIG from "config/game-config.js"
 import State from "utility/state/state.js"
 
-//todo: global
-
 const GAME_SETTINGS = {
     dataFPS: {
         category: "general",
