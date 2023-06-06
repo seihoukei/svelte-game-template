@@ -1,10 +1,9 @@
 <script>
-    import Trigger from "utility/trigger-svelte.js"
     import SettingWatcher from "config/SettingWatcher.svelte"
     import Settings from "utility/settings/settings.js"
     import GAME_SETTINGS from "utility/settings/game-settings.js"
 
-    Trigger.on("internal-command-set-setting", setSetting)
+    Settings.set = setSetting
 
     export let settings = {}
 

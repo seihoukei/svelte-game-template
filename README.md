@@ -50,8 +50,6 @@ Triggers to react to:
 - `command-advance` `(time)` - event from game engine, main trigger to react to with game-advancing events.
 - `game-saved` `(slot)` - reports that game was saved to specific slot
 
-Triggers that start with `internal-command-` should not be interacted with.
-
 ### Game state
 
 GameEngine and descendants should be the source of truth for game state. No double-binding same element twice, instead modify entity form inside on Trigger events (`Trigger.on("...", ...)`).

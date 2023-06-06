@@ -1,4 +1,3 @@
-import Trigger from "utility/trigger-svelte.js"
 import {writable} from "svelte/store"
 
 export default class State {
@@ -42,26 +41,5 @@ export default class State {
             }
             return x
         })
-    }
-    
-    //delegated to SaveStateManager reactive component
-    static save(slot) {
-        Trigger("internal-command-save-game", slot)
-    }
-    
-    static load(slot, processOffline) {
-        Trigger("internal-command-load-game", slot, processOffline)
-    }
-    
-    static reset() {
-        Trigger("internal-command-reset-game")
-    }
-    
-    static import (saveText, processOffline) {
-        Trigger("internal-command-import-save", saveText, processOffline)
-    }
-    
-    static export () {
-        Trigger("internal-command-export-save")
     }
 }

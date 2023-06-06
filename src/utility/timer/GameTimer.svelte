@@ -13,7 +13,7 @@
     let advancing = false
     let breakAdvance = false
 
-    Trigger.on("internal-command-cancel-advance", cancelAdvance)
+    Timer.cancelAdvance = cancelAdvance
 
     $: rate = Timer.rate
     $: updateInterval($rate)

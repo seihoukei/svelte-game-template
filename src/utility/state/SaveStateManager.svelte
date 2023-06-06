@@ -22,11 +22,12 @@
     let saveTimeout = null
 
     //commands from State
-    Trigger.on("internal-command-save-game", saveGame)
-    Trigger.on("internal-command-load-game", loadGame)
-    Trigger.on("internal-command-import-save", loadData)
-    Trigger.on("internal-command-export-save", exportSave)
-    Trigger.on("internal-command-reset-game", resetGame)
+
+    State.save = saveGame
+    State.load = loadGame
+    State.import = loadData
+    State.export = exportSave
+    State.reset = resetGame
 
     for (const event of State.config.actionsaveEvents) {
         Trigger.on(event, planActionsave)

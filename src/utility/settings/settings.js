@@ -1,6 +1,5 @@
 import GAME_SETTINGS from "utility/settings/game-settings.js"
 import GAME_SETTINGS_CATEGORIES from "utility/settings/game-settings-categories.js"
-import Trigger from "utility/trigger-svelte.js"
 
 export default class Settings {
     static DEFAULTS = this.#getDefaults()
@@ -32,10 +31,6 @@ export default class Settings {
     static #getGlobalList() {
         return Object.keys(GAME_SETTINGS)
             .filter(x => GAME_SETTINGS[x].global)
-    }
-    
-    static set(id, value) {
-        Trigger("internal-command-set-setting", id, value)
     }
     
     static loadGlobal() {

@@ -1,5 +1,4 @@
 import {writable} from "svelte/store"
-import Trigger from "utility/trigger-svelte.js"
 
 export default class Timer {
     static config = {
@@ -17,8 +16,5 @@ export default class Timer {
         Object.assign(this.config, config)
         this.rate.set(this.config.rate)
     }
-    
-    static cancelAdvance() {
-        Trigger("internal-command-cancel-advance")
-    }
+
 }
