@@ -17,4 +17,6 @@ export default class Timer {
         this.rate.set(this.config.rate)
     }
 
+    //replaced by GameTimer instance
+    static cancelAdvance() {}
 }

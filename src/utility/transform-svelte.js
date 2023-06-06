@@ -1,6 +1,6 @@
 import {onDestroy, onMount} from "svelte"
 
-class TriggerEventHandler {
+class TransformEventHandler {
     #event = null
     args = []
     callback = null
@@ -9,10 +9,10 @@ class TriggerEventHandler {
     
     constructor(event = null, callback = null, args = []) {
         if (event === null) {
-            throw new Error("Trigger can't have empty event")
+            throw new Error("Transform can't have empty event")
         }
         if (callback === null) {
-            throw new Error("Trigger can't have empty callback")
+            throw new Error("Transform can't have empty callback")
         }
         
         this.#event = event
@@ -25,19 +25,19 @@ class TriggerEventHandler {
     }
     
     cancel() {
-        Trigger.cancelHandler(this)
+        Transform.cancelHandler(this)
         this.#event = null
     }
     
-    execute(...args) {
+    execute(input, ...args) {
         if (this.once)
-            Trigger.cancelHandler(this)
-        return this.callback(...this.args, ...args)
+            Transform.cancelHandler(this)
+        return this.callback(input, ...this.args, ...args)
     }
     
     setPriority(priority) {
         this.#priority = priority
-        Trigger.updatePriorities(this.#event)
+        Transform.updatePriorities(this.#event)
         return this
     }
     
@@ -46,19 +46,21 @@ class TriggerEventHandler {
     }
 }
 
-const Trigger = Object.assign(function(event, ...args) {
-    Trigger._processHandlers(event, args)
+const Transform = Object.assign(function(input, event, ...args) {
+    return Transform._processHandlers(input, event, args)
     
 }, {
     _handlers : new Map(),
     
     _prioritiesUsed : false,
     
-    _processHandlers(event, args) {
+    _processHandlers(input, event, args) {
         const handlers = this._handlers.get(event) ?? []
+        let result = input
         for (let handler of handlers) {
-            handler.execute(...args)
+            result = handler.execute(result, ...args)
         }
+        return result
     },
     
     attachHandler(handler) {
@@ -70,15 +72,6 @@ const Trigger = Object.assign(function(event, ...args) {
         this._handlers.set(event, eventHandlers)
     },
     
-    collect(event, ...args) {
-        const handlers = this._handlers.get(event) ?? []
-        const results = []
-        for (const handler of handlers) {
-            results.push(handler.execute(...args))
-        }
-        return results
-    },
-    
     cancelHandler(handler) {
         const event = handler.getEvent()
         const eventHandlers = this._handlers.get(event)
@@ -86,7 +79,7 @@ const Trigger = Object.assign(function(event, ...args) {
     },
     
     createEventHandler (event, callback, ...args) {
-        const handler = new TriggerEventHandler(event, callback, args)
+        const handler = new TransformEventHandler(event, callback, args)
         this.attachHandler(handler)
         return handler
     },
@@ -124,4 +117,4 @@ const Trigger = Object.assign(function(event, ...args) {
     
 })
 
-export default Trigger
+export default Transform

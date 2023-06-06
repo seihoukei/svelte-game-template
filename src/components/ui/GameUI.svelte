@@ -5,9 +5,17 @@
     import game from "stores/store-game.js"
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
+    import interactive from "utility/use-interactive.js"
+    import Trigger from "utility/trigger-svelte.js"
+    import Transform from "utility/transform-svelte.js"
 
     $: state = $game?.state ?? null
     $: bars = state?.bars ?? []
+
+    function status() {
+        console.log(Trigger.collect("bar-status"))
+        console.log(Transform(1, "bar-speed"))
+    }
 </script>
 
 {#if import.meta.env.MODE === "development" && (!state || state?.settings?.debugInfo)}
@@ -18,7 +26,10 @@
 
     <UIMeta />
     <div class="vertical gapped flex content">
-        <div class="icon-text">
+        <div class="icon-text"
+             use:interactive
+             on:basicaction={status}
+        >
             {@html DisplayString.html(`You have ~logo~${bars.length} bars`)}
         </div>
         <div class="gapped stretched vertical flex bars">

@@ -2,16 +2,16 @@ import {writable} from "svelte/store"
 
 export default class State {
     static config = {
-        autosaveSlot : `_Autosave`,
-        backupSlot : `_BACKUP`,
-        defaultState : {},
-        actionsaveActive : true,
-        actionsaveEvents : [],
-        backupEvents : [],
-        autosaveInterval : 60000,
-        actionsaveInterval : 2000,
-        savePrefix : "Game",
-        saveVersion : 1,
+        autosaveSlot: `_Autosave`,
+        backupSlot: `_BACKUP`,
+        defaultState: {},
+        actionsaveActive: true,
+        actionsaveEvents: [],
+        backupEvents: [],
+        autosaveInterval: 60000,
+        actionsaveInterval: 2000,
+        savePrefix: "Game",
+        saveVersion: 1,
     }
     static saveInfo = writable({})
     static autosaveInterval = writable(this.config.autosaveInterval)
@@ -42,4 +42,11 @@ export default class State {
             return x
         })
     }
+    
+    //replaced by SaveStateManager instance
+    static save(slot) {}
+    static load(slot, procesOffline) {}
+    static import(data, processOffline) {}
+    static export() {}
+    static reset() {}
 }
