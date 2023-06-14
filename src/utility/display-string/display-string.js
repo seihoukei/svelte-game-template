@@ -211,16 +211,7 @@ export default class DisplayString {
         if (data.period)
             value %= data.period
         
-        let string = value.toFixed(data.precision)
-        if (data.digits > 1) {
-            const length = (string+'.').indexOf('.')
-            if (length < data.digits)
-                string = "0".repeat(data.digits - length) + string
-        }
-        
-        if (data.precision && data.cutTrailingZeroes) {
-            string = this.#cutTrailingZeroes(string)
-        }
+        let string = this.#formatNaturalValue(value, 0, data.precision, 100, false,  data.cutTrailingZeroes, false)
         
         if (data.postfix)
             string = string + data.postfix
