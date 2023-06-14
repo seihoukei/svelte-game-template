@@ -13,7 +13,7 @@
 
     function status() {
         console.log(Trigger.poll("bar-status"))
-        console.log(Trigger.transform(1, "bar-speed"))
+        console.log(Trigger.modify(1, "bar-speed"))
     }
 </script>
 

@@ -9,7 +9,7 @@
 
     Trigger.on("command-advance", advance)
     Trigger.on("bar-status", barStatus)
-    Trigger.modify("bar-speed", barSpeed)
+    Trigger.modifies("bar-speed", barSpeed)
 
     function advance(time) {
         current += time * speed
