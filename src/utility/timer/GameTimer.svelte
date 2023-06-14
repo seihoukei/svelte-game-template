@@ -13,6 +13,7 @@
     let advancing = false
     let breakAdvance = false
 
+    // Attach to Timer
     Timer.cancelAdvance = cancelAdvance
 
     $: rate = Timer.rate

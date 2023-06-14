@@ -21,8 +21,7 @@
     let lastSaved = performance.now()
     let saveTimeout = null
 
-    //commands from State
-
+    // Attach to State
     State.save = saveGame
     State.load = loadGame
     State.import = loadData
@@ -134,6 +133,5 @@
     onMount(() => {
         loadGame()
     })
-
 
 </script>

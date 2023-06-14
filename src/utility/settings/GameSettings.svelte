@@ -3,6 +3,7 @@
     import Settings from "utility/settings/settings.js"
     import GAME_SETTINGS from "utility/settings/game-settings.js"
 
+    // Attach to Settings
     Settings.set = setSetting
 
     export let settings = {}

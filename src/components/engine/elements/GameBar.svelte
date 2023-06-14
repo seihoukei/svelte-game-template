@@ -1,6 +1,5 @@
 <script>
     import Trigger from "utility/trigger-svelte.js"
-    import Transform from "utility/transform-svelte.js"
 
     export let current = 0
     export let max = 10
@@ -10,7 +9,7 @@
 
     Trigger.on("command-advance", advance)
     Trigger.on("bar-status", barStatus)
-    Transform.on("bar-speed", barSpeed)
+    Trigger.modify("bar-speed", barSpeed)
 
     function advance(time) {
         current += time * speed

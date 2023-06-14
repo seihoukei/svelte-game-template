@@ -7,14 +7,13 @@
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
     import interactive from "utility/use-interactive.js"
     import Trigger from "utility/trigger-svelte.js"
-    import Transform from "utility/transform-svelte.js"
 
     $: state = $game?.state ?? null
     $: bars = state?.bars ?? []
 
     function status() {
-        console.log(Trigger.collect("bar-status"))
-        console.log(Transform(1, "bar-speed"))
+        console.log(Trigger.poll("bar-status"))
+        console.log(Trigger.transform(1, "bar-speed"))
     }
 </script>
 

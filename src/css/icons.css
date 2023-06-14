@@ -13,5 +13,5 @@ span.inline-icon {
 }
 
 span.inline-icon.logo {
-    --icon-background: url("../resources/favicon.png");
+    --icon-background: url("/resources/favicon.png");
 }
