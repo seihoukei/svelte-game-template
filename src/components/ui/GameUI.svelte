@@ -6,7 +6,7 @@
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
     import interactive from "utility/use-interactive.js"
-    import Trigger from "utility/trigger-svelte.js"
+    import Trigger from "@seihoukei/trigger-svelte"
 
     $: state = $game?.state ?? null
     $: bars = state?.bars ?? []

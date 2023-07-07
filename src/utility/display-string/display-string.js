@@ -212,6 +212,11 @@ export default class DisplayString {
             value %= data.period
         
         let string = this.#formatNaturalValue(value, 0, data.precision, 100, false,  data.cutTrailingZeroes, false)
+        if (data.digits > 1) {
+            const digits = Math.floor(Math.log10(Math.max(value, 1))) + 1
+            if (digits < data.digits)
+            string = `${'0'.repeat(data.digits - digits)}${string}`
+        }
         
         if (data.postfix)
             string = string + data.postfix

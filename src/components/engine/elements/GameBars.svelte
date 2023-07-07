@@ -1,6 +1,7 @@
 <script>
     import GameBar from "components/engine/elements/GameBar.svelte"
-    import Trigger from "utility/trigger-svelte.js"
+    import Trigger from "@seihoukei/trigger-svelte"
+
     import game from "stores/store-game.js"
 
     export let bars = [{
@@ -17,8 +18,9 @@
         if (id === bars.length - 1) {
             bars.push({
                 current : 0,
-                max : 10 + bars.length,
-                lastReset : now
+                max : 10 * 2 ** bars.length,
+                lastReset : now,
+                completes : 0,
             })
         }
     }
@@ -31,6 +33,7 @@
              bind:max={bar.max}
              bind:outputSpeed={bar.outputSpeed}
              bind:resetTime={bar.resetTime}
+             bind:completes={bar.completes}
              speed={bars[index-1]?.outputSpeed ?? 1}
     />
 {/each}

@@ -2,7 +2,8 @@
     import State from "utility/state/state.js"
 
     import {onMount} from "svelte"
-    import Trigger from "utility/trigger-svelte.js"
+    import Trigger from "@seihoukei/trigger-svelte"
+
     import SaveProcessor from "utility/state/save-processor.js"
     import svelteInterval from "utility/svelte-interval.js"
     import Timer from "utility/timer/timer.js"

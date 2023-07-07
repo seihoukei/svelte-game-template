@@ -1,11 +1,14 @@
 <script>
-    import Trigger from "utility/trigger-svelte.js"
+    import Trigger from "@seihoukei/trigger-svelte"
+
 
     export let current = 0
     export let max = 10
     export let speed = 1
     export let outputSpeed = 1
     export let id
+    export let completes = 0
+
 
     Trigger.on("command-advance", advance)
     Trigger.on("bar-status", barStatus)
@@ -15,6 +18,7 @@
         current += time * speed
         while (current >= max) {
             current -= max
+            completes += 1
             Trigger("bar-maxed", id)
         }
         outputSpeed = speed * current / max

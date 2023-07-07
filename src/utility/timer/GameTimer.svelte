@@ -1,6 +1,7 @@
 <script>
     import {onDestroy, tick} from "svelte"
-    import Trigger from "utility/trigger-svelte.js"
+    import Trigger from "@seihoukei/trigger-svelte"
+
     import Timer from "utility/timer/timer.js"
 
     export let time = 0
