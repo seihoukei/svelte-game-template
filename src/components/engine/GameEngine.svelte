@@ -1,5 +1,4 @@
 <script>
-    import GameBars from "components/engine/elements/GameBars.svelte"
     import SaveStateManager from "utility/state/SaveStateManager.svelte"
     import GameSettings from "utility/settings/GameSettings.svelte"
     import GameTimer from "utility/timer/GameTimer.svelte"
@@ -21,8 +20,6 @@
         return {
             time : state?.targetTime,
 
-            barValue : state?.bar?.value,
-            barMax : state?.bar?.max,
         }
     }
 
@@ -49,7 +46,6 @@
 
 {#key gameId}
     {#if state}
-        <GameBars bind:bars={state.bars} />
 
         <GameSettings bind:settings={state.settings} />
         <GameTimer {milestoneFunction}

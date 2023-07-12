@@ -1,4 +1,3 @@
-import UIBarTooltip from "components/ui/tooltips/UIBarTooltip.svelte"
 import UIMenuDialog from "components/ui/dialogs/menu/UIMenuDialog.svelte"
 import UIModalDialog from "utility/dialog/UIModalDialog.svelte"
 import UISettingsDialog from "components/ui/dialogs/settings/UISettingsDialog.svelte"
@@ -22,8 +21,6 @@ export default function init() {
     Dialogs.register("_modal_dialog", UIModalDialog)
     Dialogs.register("menu", UIMenuDialog)
     Dialogs.register("settings", UISettingsDialog)
-    
-    Tooltips.register("bar", UIBarTooltip)
     
     DisplayString.setTimeFormats(DISPLAY_STRING_FORMATS.TIME)
     DisplayString.setStringFormats(DISPLAY_STRING_FORMATS.STRING)
