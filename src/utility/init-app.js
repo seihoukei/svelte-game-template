@@ -1,3 +1,5 @@
+import UIBarTooltip from "components/ui/tooltips/UIBarTooltip.svelte"
+import UIMenuDialog from "components/ui/dialogs/menu/UIMenuDialog.svelte"
 import UIModalDialog from "utility/dialog/UIModalDialog.svelte"
 
 import DisplayString from "utility/display-string/display-string.js"

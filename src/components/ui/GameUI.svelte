@@ -1,10 +1,20 @@
 <script>
     import UIMeta from "./UIMeta.svelte"
+    import UIBar from "components/ui/elements/UIBar.svelte"
+    import DisplayString from "utility/display-string/display-string.js"
     import game from "stores/store-game.js"
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
+    import interactive from "utility/use-interactive.js"
+    import Trigger from "@seihoukei/trigger-svelte"
 
     $: state = $game?.state ?? null
+    $: bars = state?.bars ?? []
+
+    function status() {
+        console.log(Trigger.poll("bar-status"))
+        console.log(Trigger.modify(1, "bar-speed"))
+    }
 </script>
 
 {#if import.meta.env.MODE === "development" && (!state || state?.settings?.debugInfo)}
@@ -15,6 +25,17 @@
 
     <UIMeta />
     <div class="vertical gapped flex content">
+        <div class="icon-text"
+             use:interactive
+             on:basicaction={status}
+        >
+            {@html DisplayString.html(`You have ~logo~${bars.length} bars`)}
+        </div>
+        <div class="gapped stretched vertical flex bars">
+            {#each bars as bar, index}
+                <UIBar {bar} {index} />
+            {/each}
+        </div>
     </div>
 
     <UIDialogs />
@@ -39,5 +60,16 @@
         top : 2rem;
         bottom : 1rem;
         right : 1rem;
+    }
+
+    div.icon-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+    }
+
+    div.bars {
+        overflow: hidden auto;
     }
 </style>
