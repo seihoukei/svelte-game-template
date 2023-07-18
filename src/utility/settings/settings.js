@@ -34,7 +34,7 @@ export default class Settings {
     }
     
     static loadGlobal() {
-        return JSON.parse(localStorage[`${this.config.prefix}_settings`] ?? "{}")
+        return JSON.parse(localStorage[`${this.config.globalPrefix}_settings`] ?? "{}")
     }
     
     static saveGlobal(settings) {
@@ -42,6 +42,6 @@ export default class Settings {
         for (const item of this.GLOBAL_SETTINGS_LIST) {
             globalSettings[item] = settings[item] ?? GAME_SETTINGS[item].defaultValue
         }
-        localStorage[`${this.config.prefix}_Settings`] = JSON.stringify(globalSettings)
+        localStorage[`${this.config.globalPrefix}_settings`] = JSON.stringify(globalSettings)
     }
 }
