@@ -24,8 +24,8 @@ Minimalistic template to base prototypes and small projects on without worrying 
   - Display game title
 - game-config.js
   - adjust all settings, most importantly `title` and `state.savePrefix`
-- init.js
-  - register tooltips, dialogs processors
+- registered-ui-elements.js
+  - register tooltips, dialogs
 - SettingWatcher.svelte
   - set up watchers for custom settings if relevant
 - `.css` files
@@ -59,7 +59,7 @@ GameUI interacts with game state only through Trigger calls.
 
 Elements with `use:tooltip={data}` cause hint to show up when hovered. 
 
-Data can be a string (would be displayed as is) or an object `{name: data}` with custom display component registered through `Tooltips.register(name, component)`. Data would then be passed to registered component as `data`.
+Data can be a string (would be displayed as is) or an object `{name: data}` with custom display component registered through `Tooltips.register(name, component)` or `registered-ui-elements.js` entry. Data would then be passed to registered component as `data`.
 
 ### use:interactive
 
@@ -97,7 +97,7 @@ State manipulation is performed through `State`.
 
 ### Dialogs
 
-`Dialogs` manages stack of displayed dialogs. Dialogs can be registered with `Dialogs.register(name, component)` and component should use `<UIDialog>` or `<UIDialog modal>` as a wrapper to its DOM content.
+`Dialogs` manages stack of displayed dialogs. Dialogs can be registered with `Dialogs.register(name, component)` or `registered-ui-elements.js` entry and component should use `<UIDialog>` or `<UIDialog modal>` as a wrapper to its DOM content.
 - `Dialogs.open(name, data)` - opens given registered dialog with given data
 - `Dialogs.close([name])` - closes topmost dialog, if name is provided only dialog of that type would be closed
 

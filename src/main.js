@@ -4,9 +4,9 @@ import "css/utility.css"
 import "css/variables.css"
 import App from "./App.svelte"
 
-import init from "config/init.js"
+import initApp from "utility/init-app.js"
 
-init()
+initApp()
 
 const app = new App({
   target: document.getElementById('app')

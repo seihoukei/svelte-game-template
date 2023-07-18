@@ -1,6 +1,4 @@
-import UIMenuDialog from "components/ui/dialogs/menu/UIMenuDialog.svelte"
 import UIModalDialog from "utility/dialog/UIModalDialog.svelte"
-import UISettingsDialog from "components/ui/dialogs/settings/UISettingsDialog.svelte"
 
 import DisplayString from "utility/display-string/display-string.js"
 import Wakelock from "utility/wakelock.js"
@@ -11,20 +9,26 @@ import Timer from "utility/timer/timer.js"
 import Settings from "utility/settings/settings.js"
 
 import GAME_CONFIG from "config/game-config.js"
-import DISPLAY_STRING_FORMATS from "config/display-string-formats.js"
+import REGISTERED_UI_ELEMENTS from "config/registered-ui-elements.js"
 
-export default function init() {
+export default function initApp() {
     document.title = GAME_CONFIG.title
     
-    Wakelock.enable()
-
-    Dialogs.register("_modal_dialog", UIModalDialog)
-    Dialogs.register("menu", UIMenuDialog)
-    Dialogs.register("settings", UISettingsDialog)
+    if (GAME_CONFIG.wakelock?.enabled)
+        Wakelock.enable()
     
-    DisplayString.setTimeFormats(DISPLAY_STRING_FORMATS.TIME)
-    DisplayString.setStringFormats(DISPLAY_STRING_FORMATS.STRING)
-    DisplayString.setNumberFormats(DISPLAY_STRING_FORMATS.NUMBER)
+    Dialogs.register("_modal_dialog", UIModalDialog)
+    for (const [name, component] of Object.entries(REGISTERED_UI_ELEMENTS.dialogs ?? {})) {
+        Dialogs.register(name, component)
+    }
+    
+    for (const [name, component] of Object.entries(REGISTERED_UI_ELEMENTS.tooltips ?? {})) {
+        Tooltips.register(name, component)
+    }
+    
+    DisplayString.setTimeFormats(GAME_CONFIG.displayStringFormats?.TIME ?? {})
+    DisplayString.setStringFormats(GAME_CONFIG.displayStringFormats?.STRING ?? {})
+    DisplayString.setNumberFormats(GAME_CONFIG.displayStringFormats?.NUMBER ?? {})
     DisplayString.applyConfig(GAME_CONFIG.displayString)
     
     State.applyConfig(GAME_CONFIG.state)

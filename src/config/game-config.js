@@ -1,5 +1,11 @@
+import DISPLAY_STRING_FORMATS from "config/display-string-formats.js"
+
 const GAME_CONFIG = {
     title : "Game title", //important!
+    
+    wakelock: {
+        enabled : true,
+    },
     
     state: {
         defaultState : Object.freeze({
@@ -31,7 +37,7 @@ const GAME_CONFIG = {
     tooltip: {
         delay : 500,    //settings.tooltipDelay
     },
-    
+
     displayString: {
         numberPostfixes : "DEFAULT",
         numberUseCeil : false,
@@ -45,6 +51,8 @@ const GAME_CONFIG = {
         numberCutTrailingZeroes : false,
         numberDynamicDigits : true,
     },
+    
+    displayStringFormats : DISPLAY_STRING_FORMATS,
     
     settings: {
         globalPrefix: "Seihoukei_Game",
