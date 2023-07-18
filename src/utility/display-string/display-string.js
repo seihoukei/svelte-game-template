@@ -159,7 +159,7 @@ export default class DisplayString {
         const postfix = postfixes?.codes?.[e3 - (postfixes?.start ?? 0)] ?? ""
         if (postfix !== "") {
             const e = e3 * 3
-            const baseValue = value / 10 ** e
+            const baseValue = value / 10 ** (e / eStep)
             return `${this.#formatNaturalValue(baseValue, log10 - e, digits, maxLength - postfix.length, dynamicDigits, cutTrailingZeroes, useCeil)}${postfix}`
         }
     
