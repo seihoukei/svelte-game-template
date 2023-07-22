@@ -155,10 +155,10 @@ export default class DisplayString {
             return `${this.#formatNaturalValue(baseValue, log10 - e, digits, maxLength - eString.length, dynamicDigits, cutTrailingZeroes, useCeil)}${eString}`
         }
 
-        const e3 = Math.floor(log10 / 3) * eStep
+        const e3 = Math.floor(log10 / 3)
         const postfix = postfixes?.codes?.[e3 - (postfixes?.start ?? 0)] ?? ""
         if (postfix !== "") {
-            const e = e3 * 3
+            const e = e3 * 3 * eStep
             const baseValue = value / 10 ** (e / eStep)
             return `${this.#formatNaturalValue(baseValue, log10 - e, digits, maxLength - postfix.length, dynamicDigits, cutTrailingZeroes, useCeil)}${postfix}`
         }
