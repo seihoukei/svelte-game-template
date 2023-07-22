@@ -44,12 +44,12 @@
             </div>
             <div class="horizontal gapped flex values">
                 {#each data.values as value}
-                    <div class="value button"
+                    <button class="value"
                          class:active={currentValue === value.value}
                          class:default={data.defaultValue === value.value}
                          use:interactive
                          on:basicaction={() => set(value.value)}
-                    >{value.displayName ?? value.value ?? "???"}</div>
+                    >{value.displayName ?? value.value ?? "???"}</button>
                 {/each}
             </div>
         </div>
@@ -79,7 +79,7 @@
         justify-content: center;
     }
 
-    div.value.button {
+    button.value {
         height: 1.5em;
         min-width: 2em;
         padding: 0 1em;

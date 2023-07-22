@@ -50,17 +50,17 @@
 
 </script>
 
-<UIDialog>
+<UIDialog modal>
     <div class="relative vertical centered spaced flex container">
         <div class="centered flex title">
             {GAME_CONFIG.title}
         </div>
-        <div class="close button"
+        <button class="close"
              use:interactive
              on:basicaction={close}
         >
             X
-        </div>
+        </button>
 
         <div class="stretched gapped em-padded em-rounded vertical flex dialog-supersection">
             <div class="centered flex time">
@@ -75,16 +75,16 @@
                     <UIMenuDialogSaveSlot {slot} />
                 {/each}
                 <div class="horizontal centered flex dialog-section save">
-                    <div class="button"
+                    <button
                          use:interactive
                          on:basicaction={exportSave}
-                    >Export >></div>
+                    >Export >></button>
                     <input class="savetext" placeholder="Paste save here" bind:value={saveText}/>
-                    <div class="button"
+                    <button
                          use:interactive
                          on:basicaction={() => importSave(true)}
                          on:specialaction={() => importSave(false)}
-                    >>> Import</div>
+                    >>> Import</button>
                 </div>
                 <div class="centered flex savehint">
                     Right-click/long-tap to load without adding offline time.
@@ -94,10 +94,10 @@
         </div>
 
         <div class="horizontal gapped flex buttons">
-            <div class="button" use:interactive
-                 on:basicaction={() => Dialogs.open("settings")}>Settings</div>
-            <div class="button" use:interactive
-                 on:basicaction={resetState}>Reset game</div>
+            <button use:interactive
+                 on:basicaction={() => Dialogs.open("settings")}>Settings</button>
+            <button use:interactive
+                 on:basicaction={resetState}>Reset game</button>
         </div>
      </div>
 </UIDialog>
@@ -122,11 +122,10 @@
         border-radius: 0.5em;
     }
 
-    div.button {
+    button {
         width: 7em;
         height: 1.5em;
-
-        border-radius: 0.5em;
+        padding: 0;
     }
 
     div.savehint {
@@ -139,7 +138,7 @@
         height: 2em;
     }
 
-    div.close.button {
+    button.close {
         position: absolute;
         right : 0.5em;
         top : 0.5em;

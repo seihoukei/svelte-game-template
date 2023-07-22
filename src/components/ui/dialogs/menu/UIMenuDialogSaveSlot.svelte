@@ -22,7 +22,7 @@
 </script>
 
 <div class="horizontal centered flex dialog-section save">
-    <div class="button"
+    <button
          use:interactive
          on:basicaction={() => save()}
     >
@@ -31,7 +31,7 @@
         {:else}
             Autosave
         {/if}
-    </div>
+    </button>
     <div class="centered flex saveinfo">
         {#if info?._date}
             {new Date(info?._date).toLocaleDateString().replace(/\d\d(\d\d)/, "$1")} {new Date(info?._date).toLocaleTimeString()}
@@ -43,11 +43,11 @@
             -- empty --
         {/if}
     </div>
-    <div class="button"
+    <button
          use:interactive
          on:basicaction={() => load()}
          on:specialaction={() => load(false)}
-    > >> Load</div>
+    > >> Load</button>
 </div>
 
 <style>
@@ -55,11 +55,10 @@
         border-radius: 0.5em;
     }
 
-    div.button {
+    button {
         width: 7em;
         height: 1.5em;
-
-        border-radius: 0.5em;
+        padding: 0;
     }
 
     div.saveinfo {

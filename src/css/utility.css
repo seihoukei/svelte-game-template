@@ -94,7 +94,14 @@
     bottom: var(--ui-default-spacing);
 }
 
-.button {
+button {
+    font-size: 1em;
+    padding: 0.25em 1em;
+    border: none;
+    border-radius: 0.5em;
+}
+
+.button, button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,16 +109,16 @@
     color: var(--ui-button-text-color);
 }
 
-.button:not(.disabled, .active):hover {
+.button:not(.disabled, .active):hover, button:not(:disabled, .active):hover {
     cursor: pointer;
     background-color: var(--ui-button-hover-color);
     transition: background-color 0.2s;
 }
 
-.button.disabled {
+.button.disabled, button:disabled {
     background-color: var(--ui-button-disabled-color);
 }
 
-.button.active {
+.button.active, button.active {
     background-color: var(--ui-button-active-color);
 }

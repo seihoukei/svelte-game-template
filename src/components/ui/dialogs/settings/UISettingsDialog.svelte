@@ -44,21 +44,21 @@
 <UIDialog>
     <div class="vertical gapped relative flex container">
         <div class="centered flex title">Settings</div>
-        <div class="close button"
+        <button class="close"
              use:interactive
              on:basicaction={close}
         >
             X
-        </div>
+        </button>
         <div class="horizontal gapped flex categories">
             {#each Settings.CATEGORY_LIST as item}
-                <div class="category button"
+                <button class="category"
                      class:active={item === category}
                      use:interactive
                      on:basicaction={() => category = item}
                 >
                     {GAME_SETTINGS_CATEGORIES[item].displayName ?? "???"}
-                </div>
+                </button>
             {/each}
         </div>
         <div class="vertical gapped flex dialog-supersection settings">
@@ -100,7 +100,7 @@
         justify-content: center;
     }
 
-    div.button {
+    button {
         height: 1.5em;
         border-radius: 1rem;
         padding: 0 1em;
@@ -115,7 +115,7 @@
     }
 
 
-    div.close.button {
+    button.close {
         position: absolute;
         right : 0.5em;
         top : 0.5em;

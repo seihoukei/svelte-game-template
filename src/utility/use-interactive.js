@@ -26,6 +26,15 @@ export default function interactive(node) {
             basicAction()
         cancelEvent(event)
     }
+    
+    const keyDownHandler = (event) => {
+        if (event.key === "Enter") {
+            if (event.shiftKey)
+                specialAction()
+            else
+                basicAction()
+        }
+    }
 
     const mouseRightHandler = (event) => {
         if (event.shiftKey && import.meta.env.MODE === "development")
@@ -53,7 +62,7 @@ export default function interactive(node) {
     const dummy = () => {}
 
     const handlers = {
-        keyup: dummy,
+        keydown: keyDownHandler,
         mouseup: mouseUpHandler,
         mouseenter: mouseInHandler,
         mouseleave: mouseOutHandler,

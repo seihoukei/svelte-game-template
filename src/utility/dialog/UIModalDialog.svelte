@@ -1,11 +1,11 @@
 <script>
     import UIDialog from "utility/dialog/UIDialog.svelte"
-    import interactive from "utility/use-interactive.js"
     import Dialogs from "utility/dialog/dialogs.js"
     import {onMount} from "svelte"
 
     export let data
 
+    let dialog
     let input
     let inputText
 
@@ -35,14 +35,24 @@
         Dialogs.close()
     }
 
+    function keypress(event) {
+        if (event.target !== input && event.target !== dialog)
+            return
+
+        const keyButton = buttons.find(button => button.key && button.key.toLowerCase() === event.key.toLowerCase())
+        if (keyButton)
+            returnResult(keyButton)
+    }
+
     onMount(() => {
+        dialog?.focus?.()
         input?.focus?.()
         inputText = data?.defaultValue ?? ""
     })
 </script>
 
-<UIDialog modal>
-    <div class="gapped padded vertical stretched flex dialog">
+<UIDialog modal unclosable>
+    <div class="gapped padded vertical stretched flex dialog" on:keydown={keypress} bind:this={dialog} tabindex="1">
         <div class="centered flex dialog-supersection padded em-rounded message">
             {message}
         </div>
@@ -52,23 +62,24 @@
                        type="number"
                        bind:this={input}
                        bind:value={inputText}
+                       on:keydown={keypress}
                 />
             {:else}
                 <input placeholder={inputHint}
                        bind:this={input}
                        bind:value={inputText}
+                       on:keydown={keypress}
                 />
             {/if}
         {/if}
         <div class="horizontal centered spaced flex buttons">
-            {#each buttons as button}
-                <div class="button text"
-                     class:disabled={button.validation && !button.validation(inputText ?? "")}
-                     use:interactive
-                     on:basicaction={() => returnResult(button)}
+            {#each buttons as button, index}
+                <button
+                    class:disabled={button.validation && !button.validation(inputText ?? "")}
+                    on:click={() => returnResult(button)}
                 >
                     {button.text}
-                </div>
+                </button>
             {/each}
         </div>
     </div>
@@ -78,10 +89,6 @@
     div.dialog {
         font-size: 2em;
         min-width : 10em;
-    }
-    div.button {
-        padding: 0.25em 1em;
-        border-radius: 0.5em;
     }
     input {
         font-size: inherit;
