@@ -35,6 +35,8 @@
 <style>
     div.meta {
         flex-direction: row-reverse;
+        align-items: center;
+        background-color: black;
     }
 
     span.title {
