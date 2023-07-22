@@ -1,4 +1,4 @@
-import UIModalDialog from "utility/dialog/UIModalDialog.svelte"
+import UIGenericDialog from "utility/dialog/UIGenericlDialog.svelte"
 
 import DisplayString from "utility/display-string/display-string.js"
 import Wakelock from "utility/wakelock.js"
@@ -17,7 +17,7 @@ export default function initApp() {
     if (GAME_CONFIG.wakelock?.enabled)
         Wakelock.enable()
     
-    Dialogs.register("_modal_dialog", UIModalDialog)
+    Dialogs.register("_generic_dialog", UIGenericDialog)
     for (const [name, component] of Object.entries(REGISTERED_UI_ELEMENTS.dialogs ?? {})) {
         Dialogs.register(name, component)
     }

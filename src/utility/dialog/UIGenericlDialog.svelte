@@ -8,6 +8,7 @@
     let dialog
     let input
     let inputText
+    let cancellable
 
     $: message = data?.message ?? ""
     $: buttons = data?.buttons ?? []
@@ -15,6 +16,7 @@
     $: isNumber = data?.isNumber ?? false
     $: inputHint = data?.inputHint ?? ""
     $: resolve = data?.resolve ?? noResolve
+    $: cancellable = data?.cancellable ?? true
 
     function noResolve() {
         throw new Error("No resolve function for dialog")
@@ -51,7 +53,7 @@
     })
 </script>
 
-<UIDialog modal unclosable>
+<UIDialog {cancellable}>
     <div class="gapped padded vertical stretched flex dialog" on:keydown={keypress} bind:this={dialog} tabindex="1">
         <div class="centered flex dialog-supersection padded em-rounded message">
             {message}

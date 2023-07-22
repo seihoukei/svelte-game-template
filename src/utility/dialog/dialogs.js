@@ -74,43 +74,73 @@ export default class Dialogs {
             return x.slice(0, -1)
         })
     }
+    static cancel(name = null) {
+        this.openDialogs.update(x => {
+            if (name !== null && x.at(-1)?.type !== this.#dialogs[name])
+                return x
+    
+            const dialog = x.at(-1)
+            dialog?.data?.resolve(dialog?.data?.cancelValue ?? null)
+    
+            return x.slice(0, -1)
+        })
+    }
     
     static closeAll() {
         this.openDialogs.set([])
     }
     
-    static async modal(data) {
+    static async generic(data) {
         return new Promise(resolve =>
-            this.open("_modal_dialog", {
+            this.open("_generic_dialog", {
                 ...data,
                 resolve,
             })
         )
     }
     
-    static async confirm(prompt, buttons = this.BUTTON_SETS.YES_NO) {
-        return this.modal({
+    static async confirm(prompt, {
+        buttons = this.BUTTON_SETS.YES_NO,
+        cancellable = true,
+        cancelValue = null,
+    } = {}) {
+        return this.generic({
             message : prompt,
             buttons,
+            cancellable,
+            cancelValue,
         })
     }
     
-    static async ask(prompt, buttons = this.BUTTON_SETS.YES_NO) {
-        return this.modal({
+    static async ask(prompt, {
+        buttons = this.BUTTON_SETS.YES_NO,
+        cancellable = true,
+        cancelValue = null,
+    } = {}) {
+        return this.generic({
             message : prompt,
             buttons,
+            cancellable, cancelValue,
         })
     }
     
-    static async alert(message, buttons = this.BUTTON_SETS.OK) {
-        return this.modal({
+    static async alert(message, {
+        buttons = this.BUTTON_SETS.OK
+    } = {}) {
+        return this.generic({
             message,
             buttons,
         })
     }
     
-    static async prompt(prompt, defaultValue = "", inputHint = "", validation) {
-        return this.modal({
+    static async prompt(prompt, {
+        defaultValue = "",
+        inputHint = "",
+        validation,
+        cancellable = true,
+        cancelValue = null,
+    } = {}) {
+        return this.generic({
             message: prompt,
             isInput : true,
             buttons : [{
@@ -120,12 +150,18 @@ export default class Dialogs {
             },
                 this.BUTTONS.CANCEL
             ],
-            defaultValue, inputHint,
+            defaultValue, inputHint, cancellable, cancelValue
         })
     }
     
-    static async promptNumber(prompt, defaultValue = "", inputHint = "", validation) {
-        return this.modal({
+    static async promptNumber(prompt, {
+        defaultValue = "",
+        inputHint = "",
+        validation,
+        cancellable = true,
+        cancelValue = null,
+    } = {}) {
+        return this.generic({
             message: prompt,
             isInput : true,
             isNumber : 1,
@@ -136,7 +172,7 @@ export default class Dialogs {
             },
                 this.BUTTONS.CANCEL
             ],
-            defaultValue, inputHint,
+            defaultValue, inputHint, cancellable, cancelValue
         })
     }
 }

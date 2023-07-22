@@ -2,19 +2,18 @@
     import Dialogs from "utility/dialog/dialogs.js"
     import {onMount} from "svelte"
 
-    export let modal = false
-    export let unclosable = false
+    export let cancellable = true
 
     let holder
 
     function close(event) {
-        if (event.target === holder && !modal) {
+        if (event.target === holder && cancellable) {
             Dialogs.close()
         }
     }
 
     function keypress(event) {
-        if (!unclosable && event.target === holder && event.key === "Escape") {
+        if (cancellable && event.target === holder && event.key === "Escape") {
             Dialogs.close()
         }
     }
