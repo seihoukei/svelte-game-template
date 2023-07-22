@@ -12,27 +12,22 @@ export default class Dialogs {
     static BUTTONS = {
         OK : {
             text: "OK",
-            key: "Enter",
             result: this.RESULTS.OK,
         },
         CANCEL : {
             text : "Cancel",
-            key: "Escape",
             result : this.RESULTS.CANCEL
         },
         YES : {
             text: "Yes",
-            key: "Enter",
             result: this.RESULTS.YES
         },
         NO : {
             text : "No",
-            key: "Escape",
             result : this.RESULTS.NO
         },
         ALL : {
             text : "All",
-            key: "A",
             result : this.RESULTS.ALL
         },
     }

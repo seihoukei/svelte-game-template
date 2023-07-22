@@ -1,42 +1,45 @@
 <script>
     import Dialogs from "utility/dialog/dialogs.js"
-    import {onMount} from "svelte"
+    import {onDestroy, onMount} from "svelte"
 
-    export let cancellable = true
+    export let nocancel = false
 
-    let holder
-
-    function close(event) {
-        if (event.target === holder && cancellable) {
-            Dialogs.close()
-        }
-    }
-
-    function keypress(event) {
-        if (cancellable && event.target === holder && event.key === "Escape") {
-            Dialogs.close()
-        }
-    }
+    let dialog
 
     onMount(() => {
-        holder.focus()
+        dialog.showModal()
     })
+
+    onDestroy(() => {
+        dialog.close()
+    })
+
+    function closeDialog() {
+        Dialogs.close()
+    }
+
+    function checkCancel(event) {
+        if (nocancel)
+            event.preventDefault()
+    }
 
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="absolute fullsize centered flex holder" on:click={close} bind:this={holder} tabindex="1" on:keydown={keypress}>
-    <div class="dialog">
-        <slot />
-    </div>
-</div>
+<dialog bind:this={dialog} on:close={closeDialog} on:cancel={checkCancel}>
+    <slot />
+</dialog>
 
 <style>
-    div.holder {
+    dialog::backdrop {
         background-color: #000000AA;
     }
 
-    div.dialog {
+    dialog {
         background-color: var(--ui-dialog-color);
+        padding: 0;
+        border : 0;
+        color: var(--ui-dialog-text-color);
+        overflow: hidden;
     }
 </style>

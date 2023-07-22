@@ -51,7 +51,7 @@
 
 </script>
 
-<UIDialog modal>
+<UIDialog>
     <div class="relative vertical centered spaced flex container">
         <div class="centered flex title">
             {GAME_CONFIG.title}
