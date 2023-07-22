@@ -4,6 +4,8 @@
     import UIDialogs from "utility/dialog/UIDialogs.svelte"
     import UIToolTip from "utility/tooltip/UIToolTip.svelte"
 
+    let state
+
     $: state = $game?.state ?? null
 </script>
 

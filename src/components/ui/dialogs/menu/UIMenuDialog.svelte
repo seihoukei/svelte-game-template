@@ -15,6 +15,7 @@
     export let data = {}
 
     let saveText = ""
+    let state, targetTime
 
     $: state = $game?.state
     $: currentTime = state?.time ?? 0

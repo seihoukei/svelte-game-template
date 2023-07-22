@@ -6,6 +6,8 @@
     import game from "stores/store-game.js"
     import GAME_CONFIG from "config/game-config.js"
 
+    let state, targetTime
+
     $: state = $game?.state
     $: currentTime = state?.time ?? 0
     $: targetTime = state?.targetTime ?? 0

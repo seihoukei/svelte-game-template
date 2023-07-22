@@ -7,6 +7,8 @@
 
     export let settings = {}
 
+    let autosaveInterval
+
     // Custom setttings watchers go here
     // First decouple primitive value from settings object:
     // $: <variable> = settings.<name> ?? <default value>

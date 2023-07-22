@@ -1,6 +1,8 @@
 <script>
     import Tooltips from "utility/tooltip/tooltips.js"
 
+    let data
+
     $: tooltip = Tooltips.tooltip
 
     $: data = $tooltip?.data ?? null
@@ -41,6 +43,7 @@
         border: 1px solid #777777;
         font-size: 16px;
         pointer-events: none;
+        /*noinspection CssUnresolvedCustomProperty*/
         transform: translate(var(--tooltip-x), var(--tooltip-y));
         z-index : 1000;
         white-space: pre-line;

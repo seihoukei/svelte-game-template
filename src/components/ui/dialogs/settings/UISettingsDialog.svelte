@@ -14,6 +14,8 @@
     // svelte-ignore unused-export-let
     export let data = {}
 
+    let settingList, settings
+
     let category = Settings.CATEGORY_LIST[0]
     $: settingsList = Settings.CATEGORY_SETTINGS_LIST[category] ?? []
     $: settings = $game?.state?.settings

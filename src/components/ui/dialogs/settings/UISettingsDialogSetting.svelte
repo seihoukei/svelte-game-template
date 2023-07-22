@@ -7,6 +7,8 @@
     export let setting
     export let checked
 
+    let settings, data
+
     $: settings = $game?.state?.settings ?? {}
     $: data = GAME_SETTINGS[setting] ?? {}
     $: currentValue = settings[setting]
